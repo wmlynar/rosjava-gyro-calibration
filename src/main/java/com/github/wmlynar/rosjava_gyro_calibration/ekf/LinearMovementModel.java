@@ -33,8 +33,8 @@ public class LinearMovementModel {
 	public Matrix getJacobian(Matrix state_estimate, double dt) {
 		jacobian.data[0][0] = 1;
 		jacobian.data[0][1] = dt;
-		jacobian.data[1][0] = 1;
-		jacobian.data[1][1] = 0;
+		jacobian.data[1][0] = 0;
+		jacobian.data[1][1] = 1;
 		return jacobian;
 	}
 

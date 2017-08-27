@@ -106,6 +106,7 @@ public class KalmanFilter {
 	void estimate(double dt, ObservationModel obs) {
 		/* Calculate innovation */
 		obs.getObservationModel(model.predicted_state, obs.innovation);
+		obs.getObservation(obs.observation);
 		Matrix.subtract_matrix(obs.observation, obs.innovation, obs.innovation);
 
 		/* Calculate innovation covariance */

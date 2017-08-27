@@ -5,15 +5,15 @@ public class ObservationModel {
 	public int stateDimension = 2;
 	public int observationDimension = 1;
 	
-	public Matrix observation = new Matrix(observationDimension, 1);
-	public Matrix innovation = new Matrix(observationDimension, 1);
-	public Matrix observation_model = new Matrix(observationDimension, stateDimension);
-	public Matrix observation_noise_covariance = new Matrix(observationDimension, observationDimension);
+	public Matrix observation = new Matrix(getObservationDimension(), 1);
+	public Matrix innovation = new Matrix(getObservationDimension(), 1);
+	public Matrix observation_model = new Matrix(getObservationDimension(), getStateDimension());
+	public Matrix observation_noise_covariance = new Matrix(getObservationDimension(), getObservationDimension());
 
-	public Matrix innovation_covariance = new Matrix(observationDimension, observationDimension);
-	public Matrix inverse_innovation_covariance = new Matrix(observationDimension, observationDimension);
-	public Matrix vertical_scratch = new Matrix(stateDimension, observationDimension);
-	public Matrix optimal_gain = new Matrix(stateDimension, observationDimension);
+	public Matrix innovation_covariance = new Matrix(getObservationDimension(), getObservationDimension());
+	public Matrix inverse_innovation_covariance = new Matrix(getObservationDimension(), getObservationDimension());
+	public Matrix vertical_scratch = new Matrix(getStateDimension(), getObservationDimension());
+	public Matrix optimal_gain = new Matrix(getStateDimension(), getObservationDimension());
 	
 	public int getStateDimension() {
 		return 2;
@@ -21,6 +21,9 @@ public class ObservationModel {
 
 	public int getObservationDimension() {
 		return 1;
+	}
+
+	public void getObservation(Matrix observation) {
 	}
 
 	public void getObservationModel(Matrix state, Matrix innovation) {

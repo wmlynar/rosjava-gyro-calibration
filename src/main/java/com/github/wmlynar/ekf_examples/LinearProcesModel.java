@@ -1,35 +1,34 @@
-package com.github.wmlynar.ekf;
+package com.github.wmlynar.ekf_examples;
 
-public class ProcessModel {
-	
-	public int stateDimension = 2;
-	public Matrix state_estimate = new Matrix(getStateDimension(), 1);
-	public Matrix predicted_state = new Matrix(getStateDimension(), 1);
-	public Matrix state_transition = new Matrix(getStateDimension(), getStateDimension());
-	public Matrix estimate_covariance = new Matrix(getStateDimension(), getStateDimension());
-	public Matrix process_noise_covariance = new Matrix(getStateDimension(), getStateDimension());
-	public Matrix predicted_estimate_covariance = new Matrix(getStateDimension(), getStateDimension());
-	public Matrix big_square_scratch = new Matrix(getStateDimension(), getStateDimension());
-	
+import com.github.wmlynar.ekf.Matrix;
+import com.github.wmlynar.ekf.ProcessModel;
+
+public class LinearProcesModel extends ProcessModel {
+
+	@Override
 	public int getStateDimension() {
 		return 2;
 	}
 
+	@Override
 	public void initializeState(Matrix state_estimate) {
 		state_estimate.data[0][0] = 0;
 		state_estimate.data[1][0] = 0;
 	}
 
+	@Override
 	public void initializeCovariance(Matrix estimate_covariance) {
 		estimate_covariance.set_identity_matrix();
 		estimate_covariance.scale_matrix(1000);
 	}
 
+	@Override
 	public void getNextState(Matrix state_estimate, double dt, Matrix predicted_state) {
 		predicted_state.data[0][0] = state_estimate.data[0][0] + state_estimate.data[1][0] * dt;
 		predicted_state.data[1][0] = state_estimate.data[1][0];
 	}
 
+	@Override
 	public void getJacobian(Matrix state_estimate, double dt, Matrix state_transition) {
 		state_transition.data[0][0] = 1;
 		state_transition.data[0][1] = dt;
@@ -37,10 +36,10 @@ public class ProcessModel {
 		state_transition.data[1][1] = 1;
 	}
 
+	@Override
 	public Matrix getProcessNoiseCovariance(double dt, Matrix process_noise_covariance) {
 		process_noise_covariance.data[0][0] = dt;
 		process_noise_covariance.data[1][1] = dt;
 		return process_noise_covariance;
 	}
 }
-

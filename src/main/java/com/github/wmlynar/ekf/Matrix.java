@@ -12,14 +12,14 @@ public class Matrix {
 	 * Allocate memory for a new matrix. Zeros out the matrix. Assert-fails if
 	 * we are out of memory.
 	 */
-	Matrix(int rows, int cols) {
+	public Matrix(int rows, int cols) {
 		this.rows = rows;
 		this.cols = cols;
 		this.data = new double[rows][cols];
 	}
 
 	/* Set values of a matrix, row by row. */
-	void set_matrix(double... arg) {
+	public void set_matrix(double... arg) {
 		assert (arg.length == rows * cols);
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
@@ -29,7 +29,7 @@ public class Matrix {
 	}
 
 	/* Turn m into an identity matrix. */
-	void set_identity_matrix() {
+	public void set_identity_matrix() {
 		assert (rows == cols);
 		for (int i = 0; i < rows; ++i) {
 			for (int j = 0; j < cols; ++j) {
@@ -43,7 +43,7 @@ public class Matrix {
 	}
 
 	/* Copy a matrix. */
-	static void copy_matrix(Matrix source, Matrix destination) {
+	public static void copy_matrix(Matrix source, Matrix destination) {
 		assert (source.rows == destination.rows);
 		assert (source.cols == destination.cols);
 		for (int i = 0; i < source.rows; ++i) {
@@ -54,7 +54,7 @@ public class Matrix {
 	}
 
 	/* Pretty-print a matrix. */
-	void print_matrix() {
+	public void print_matrix() {
 		for (int i = 0; i < rows; ++i) {
 			for (int j = 0; j < cols; ++j) {
 				if (j > 0)
@@ -66,7 +66,7 @@ public class Matrix {
 	}
 
 	/* Add matrices a and b and put the result in c. */
-	static void add_matrix(Matrix a, Matrix b, Matrix c) {
+	public static void add_matrix(Matrix a, Matrix b, Matrix c) {
 		assert (a.rows == b.rows);
 		assert (a.rows == c.rows);
 		assert (a.cols == b.cols);
@@ -79,7 +79,7 @@ public class Matrix {
 	}
 
 	/* Subtract matrices a and b and put the result in c. */
-	static void subtract_matrix(Matrix a, Matrix b, Matrix c) {
+	public static void subtract_matrix(Matrix a, Matrix b, Matrix c) {
 		assert (a.rows == b.rows);
 		assert (a.rows == c.rows);
 		assert (a.cols == b.cols);
@@ -92,7 +92,7 @@ public class Matrix {
 	}
 
 	/* Subtract from the identity matrix in place. */
-	static void subtract_from_identity_matrix(Matrix a) {
+	public static void subtract_from_identity_matrix(Matrix a) {
 		assert (a.rows == a.cols);
 		for (int i = 0; i < a.rows; ++i) {
 			for (int j = 0; j < a.cols; ++j) {
@@ -106,7 +106,7 @@ public class Matrix {
 	}
 
 	/* Multiply matrices a and b and put the result in c. */
-	static void multiply_matrix(Matrix a, Matrix b, Matrix c) {
+	public static void multiply_matrix(Matrix a, Matrix b, Matrix c) {
 		assert (a.cols == b.rows);
 		assert (a.rows == c.rows);
 		assert (b.cols == c.cols);
@@ -129,7 +129,7 @@ public class Matrix {
 	 * This is multiplying a by b-tranpose so it is like multiply_matrix but
 	 * references to b reverse rows and cols.
 	 */
-	static void multiply_by_transpose_matrix(Matrix a, Matrix b, Matrix c) {
+	public static void multiply_by_transpose_matrix(Matrix a, Matrix b, Matrix c) {
 		assert (a.cols == b.cols);
 		assert (a.rows == c.rows);
 		assert (b.rows == c.cols);
@@ -148,7 +148,7 @@ public class Matrix {
 	}
 
 	/* Transpose input and put the result in output. */
-	static void transpose_matrix(Matrix input, Matrix output) {
+	public static void transpose_matrix(Matrix input, Matrix output) {
 		assert (input.rows == output.cols);
 		assert (input.cols == output.rows);
 		for (int i = 0; i < input.rows; ++i) {
@@ -159,7 +159,7 @@ public class Matrix {
 	}
 
 	/* Whether two matrices are approximately equal. */
-	static boolean equal_matrix(Matrix a, Matrix b, double tolerance) {
+	public static boolean equal_matrix(Matrix a, Matrix b, double tolerance) {
 		assert (a.rows == b.rows);
 		assert (a.cols == b.cols);
 		for (int i = 0; i < a.rows; ++i) {
@@ -172,7 +172,7 @@ public class Matrix {
 	}
 
 	/* Multiply a matrix by a scalar. */
-	void scale_matrix(double scalar) {
+	public void scale_matrix(double scalar) {
 		assert (scalar != 0.0);
 		for (int i = 0; i < rows; ++i) {
 			for (int j = 0; j < cols; ++j) {
@@ -185,7 +185,7 @@ public class Matrix {
 	 * Swap rows r1 and r2 of a matrix. This is one of the three
 	 * "elementary row operations".
 	 */
-	void swap_rows(int r1, int r2) {
+	public void swap_rows(int r1, int r2) {
 		assert (r1 != r2);
 		double[] tmp = data[r1];
 		data[r1] = data[r2];
@@ -196,7 +196,7 @@ public class Matrix {
 	 * Multiply row r of a matrix by a scalar. This is one of the three
 	 * "elementary row operations".
 	 */
-	void scale_row(int r, double scalar) {
+	public void scale_row(int r, double scalar) {
 		assert (scalar != 0.0);
 		for (int i = 0; i < cols; ++i)
 			data[r][i] *= scalar;
@@ -207,7 +207,7 @@ public class Matrix {
 	 * This is one of the three "elementary row operations".
 	 */
 	/* Add scalar * row r2 to row r1. */
-	void shear_row(int r1, int r2, double scalar) {
+	public void shear_row(int r1, int r2, double scalar) {
 		assert (r1 != r2);
 		for (int i = 0; i < cols; ++i)
 			data[r1][i] += scalar * data[r2][i];
@@ -230,7 +230,7 @@ public class Matrix {
 	 * This is not the fastest way to invert matrices, so this is quite possibly
 	 * the bottleneck.
 	 */
-	static boolean destructive_invert_matrix(Matrix input, Matrix output) {
+	public static boolean destructive_invert_matrix(Matrix input, Matrix output) {
 		assert (input.rows == input.cols);
 		assert (input.rows == output.rows);
 		assert (input.rows == output.cols);

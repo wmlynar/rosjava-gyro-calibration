@@ -1,6 +1,6 @@
 package com.github.wmlynar.rosjava_gyro_calibration.ekf;
 
-public class ObservationModel {
+public class AbstractObservationModel {
 	
 	int stateDimension = 2;
 	int observationDimension = 1;

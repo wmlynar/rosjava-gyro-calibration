@@ -13,8 +13,8 @@ public class KalmanFilterModelTest {
 
 	@Test
 	public void test() {
-		ProcessModel model = new ProcessModel();
-		ObservationModel obs = new ObservationModel();
+		AbstractProcessModel model = new AbstractProcessModel();
+		AbstractObservationModel obs = new AbstractObservationModel();
 		KalmanFilter filter = new KalmanFilter(model);
 		
 		// ruch w bok

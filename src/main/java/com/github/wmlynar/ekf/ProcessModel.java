@@ -1,4 +1,4 @@
-package com.github.wmlynar.rosjava_gyro_calibration.ekf;
+package com.github.wmlynar.ekf;
 
 public class ProcessModel {
 	

@@ -1,4 +1,4 @@
-package com.github.wmlynar.rosjava_gyro_calibration.ekf;
+package com.github.wmlynar.ekf;
 
 /* Refer to http://en.wikipedia.org/wiki/Kalman_filter for
  mathematical details. The naming scheme is that variables get names
@@ -84,13 +84,13 @@ public class KalmanFilter {
 	 * It is also advisable to initialize with reasonable guesses for
 	 * f.state_estimate f.estimate_covariance
 	 */
-	void update(double dt, ObservationModel obs) {
+	public void update(double dt, ObservationModel obs) {
 		predict(dt);
 		estimate(dt, obs);
 	}
 
 	/* Just the prediction phase of update. */
-	void predict(double dt) {
+	public void predict(double dt) {
 		/* Predict the state */
 		model.getNextState(model.state_estimate, dt, model.predicted_state);
 		

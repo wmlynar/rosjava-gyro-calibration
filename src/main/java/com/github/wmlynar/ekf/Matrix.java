@@ -1,12 +1,12 @@
-package com.github.wmlynar.rosjava_gyro_calibration.ekf;
+package com.github.wmlynar.ekf;
 
 public class Matrix {
 	/* Dimensions */
-	int rows;
-	int cols;
+	public int rows;
+	public int cols;
 
 	/* Contents of the matrix */
-	double[][] data;
+	public double[][] data;
 
 	/*
 	 * Allocate memory for a new matrix. Zeros out the matrix. Assert-fails if

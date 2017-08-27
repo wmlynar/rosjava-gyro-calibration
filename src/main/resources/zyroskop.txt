@@ -1,0 +1,60 @@
+be mine - piosenka
+
+zlikwidowac duplikaty odom!
+
+wejscie
+odom x
+odom y
+gyro voltage
+
+-------------
+
+model - wszystkie pomiary przychodza jako obserwacje
+
+model
+ [left]       [speed + rotation * base_width] 
+ [right]      [speed - rotation * base_width]
+d[speed]   =  [0]
+ [rotation]   [0]
+ [base_width] [0]
+ [beta]       [0]
+ [gain]       [0]
+ 
+ obserwacja
+ [left]       [odom_left] 
+ [right]      [odom_right]
+ [speed]   =  []
+ [rotation]   [beta + gyro*gain]
+ [base_width] []
+ [beta]       []
+ [gain]       []
+ 
+
+model - odom przychodzi jako obserwacja, zyroskop jako sterowanie
+
+ [left]       [speed + (beta + gyro*gain) * base_width] 
+ [right]      [speed - (beta + gyro*gain) * base_width]
+d[speed]   =  [0]
+ [rotation]   [0]
+ [base_width] [0]
+ [beta]       [0]
+ [gain]       [0]
+
+
+http://wiki.ros.org/navigation/Tutorials/RobotSetup/Odom
+http://wiki.ros.org/navigation/Tutorials/RobotSetup
+https://answers.ros.org/question/105901/how-to-publish-transform-from-odom-to-base_link/
+
+
+ikalman
+https://github.com/kranfix/ekf/blob/master/ekfjava/KalmanFilter.java
+https://github.com/pedro-stanaka/kalman-gps/blob/master/src/main/java/br/uel/cross/filter/KalmanFilter.java
+https://github.com/redfish64/TinyTravelTracker/blob/master/app/src/main/java/ikalman/KalmanFilter.java
+https://github.com/yasushi-saito/GpsKalmanFilter/blob/master/src/com/ysaito/gpskalmanfilter/GpsKalmanFilter.java
+
+
+
+
+
+
+

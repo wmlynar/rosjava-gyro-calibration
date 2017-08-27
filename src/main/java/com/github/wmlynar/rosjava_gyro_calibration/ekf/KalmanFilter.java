@@ -53,13 +53,13 @@ public class KalmanFilter {
 //	Matrix small_square_scratch;
 	Matrix big_square_scratch;
 
-	private LinearMovementModel model;
+	private ProcessModel model;
 
-	public KalmanFilter(LinearMovementModel model) {
+	public KalmanFilter(ProcessModel model) {
 		this.model = model;
 		state_dimension = model.getDimension();
-		state_estimate = model.initialState();
-		estimate_covariance = model.initialCovariance();
+		state_estimate = model.getInitialState();
+		estimate_covariance = model.getInitialCovariance();
 
 		predicted_estimate_covariance = new Matrix(state_dimension,	state_dimension);
 //		innovation_covariance = new Matrix(observation_dimension, observation_dimension);
@@ -84,7 +84,7 @@ public class KalmanFilter {
 	 * It is also advisable to initialize with reasonable guesses for
 	 * f.state_estimate f.estimate_covariance
 	 */
-	void update(double dt, LinearModelObservation obs) {
+	void update(double dt, ObservationModel obs) {
 		predict(dt);
 		estimate(dt, obs);
 	}
@@ -103,7 +103,7 @@ public class KalmanFilter {
 	}
 
 	/* Just the estimation phase of update. */
-	void estimate(double dt, LinearModelObservation obs) {
+	void estimate(double dt, ObservationModel obs) {
 		// get temporary matrices
 		Matrix vertical_scratch = obs.getTemporaryMatrixStateObservationOne();
 		Matrix optimal_gain = obs.getTemporaryMatrixStateObservationTwo();
@@ -111,13 +111,13 @@ public class KalmanFilter {
 		Matrix inverse_innovation_covariance = obs.getTemporaryMatrixObservationObservationTwo();
 		
 		/* Calculate innovation */
-		observation = obs.observationValue();
-		innovation = obs.observationModel(predicted_state);
+		observation = obs.getObservationValue();
+		innovation = obs.getObservationModel(predicted_state);
 		Matrix.subtract_matrix(observation, innovation, innovation);
 
 		/* Calculate innovation covariance */
-		observation_model = obs.observationJacobian();
-		observation_noise_covariance = obs.observationNoiseCovariance();
+		observation_model = obs.getObservationJacobian();
+		observation_noise_covariance = obs.getObservationNoiseCovariance();
 		Matrix.multiply_by_transpose_matrix(predicted_estimate_covariance, observation_model, vertical_scratch);
 		Matrix.multiply_matrix(observation_model, vertical_scratch, innovation_covariance);
 		Matrix.add_matrix(innovation_covariance, observation_noise_covariance, innovation_covariance);

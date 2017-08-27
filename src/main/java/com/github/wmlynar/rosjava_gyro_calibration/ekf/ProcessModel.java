@@ -1,6 +1,6 @@
 package com.github.wmlynar.rosjava_gyro_calibration.ekf;
 
-public class LinearMovementModel {
+public class ProcessModel {
 	
 	int stateDimension = 2;
 	Matrix initialState = new Matrix(stateDimension, 1);
@@ -13,13 +13,13 @@ public class LinearMovementModel {
 		return stateDimension;
 	}
 
-	public Matrix initialState() {
+	public Matrix getInitialState() {
 		initialState.data[0][0] = 0;
 		initialState.data[1][0] = 0;
 		return initialState;
 	}
 
-	public Matrix initialCovariance() {
+	public Matrix getInitialCovariance() {
 		covariance.set_identity_matrix();
 		covariance.scale_matrix(1000);
 		return covariance;

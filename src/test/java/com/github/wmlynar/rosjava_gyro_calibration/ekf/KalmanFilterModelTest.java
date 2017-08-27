@@ -8,6 +8,8 @@ import org.junit.Test;
 import com.github.wmlynar.ekf.KalmanFilter;
 import com.github.wmlynar.ekf.ObservationModel;
 import com.github.wmlynar.ekf.ProcessModel;
+import com.github.wmlynar.ekf_examples.LinearObservationModel;
+import com.github.wmlynar.ekf_examples.LinearProcessModel;
 
 public class KalmanFilterModelTest {
 
@@ -17,8 +19,8 @@ public class KalmanFilterModelTest {
 
 	@Test
 	public void test() {
-		ProcessModel model = new ProcessModel();
-		ObservationModel obs = new ObservationModel();
+		LinearProcessModel model = new LinearProcessModel();
+		LinearObservationModel obs = new LinearObservationModel();
 		KalmanFilter filter = new KalmanFilter(model);
 		
 		// ruch w bok

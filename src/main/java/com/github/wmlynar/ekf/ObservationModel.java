@@ -1,6 +1,6 @@
 package com.github.wmlynar.ekf;
 
-public class ObservationModel {
+public abstract class ObservationModel {
 	
 	public int stateDimension = 2;
 	public int observationDimension = 1;
@@ -15,31 +15,15 @@ public class ObservationModel {
 	public Matrix vertical_scratch = new Matrix(getStateDimension(), getObservationDimension());
 	public Matrix optimal_gain = new Matrix(getStateDimension(), getObservationDimension());
 	
-	public int getStateDimension() {
-		return 2;
-	}
+	public abstract int getStateDimension();
 
-	public int getObservationDimension() {
-		return 1;
-	}
+	public abstract int getObservationDimension();
 
-	public void getObservation(Matrix observation) {
-	}
+	public abstract void getObservation(Matrix observation);
+	
+	public abstract void getObservationModel(Matrix state, Matrix innovation);
 
-	public void getObservationModel(Matrix state, Matrix innovation) {
-		innovation.data[0][0] = state.data[0][0];
-	}
+	public abstract void getObservationJacobian(Matrix observation_model);
 
-	public void getObservationJacobian(Matrix observation_model) {
-		observation_model.data[0][0] = 1;
-	}
-
-	public void getObservationNoiseCovariance(Matrix observation_noise_covariance) {
-		observation_noise_covariance.set_identity_matrix();
-	}
-
-	public void setPosition(double x) {
-		observation.data[0][0] = x;
-	}
-
+	public abstract void getObservationNoiseCovariance(Matrix observation_noise_covariance);
 }

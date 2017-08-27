@@ -1,8 +1,7 @@
 package com.github.wmlynar.ekf;
 
-public class ProcessModel {
+public abstract class ProcessModel {
 	
-	public int stateDimension = 2;
 	public Matrix state_estimate = new Matrix(getStateDimension(), 1);
 	public Matrix predicted_state = new Matrix(getStateDimension(), 1);
 	public Matrix state_transition = new Matrix(getStateDimension(), getStateDimension());
@@ -11,36 +10,16 @@ public class ProcessModel {
 	public Matrix predicted_estimate_covariance = new Matrix(getStateDimension(), getStateDimension());
 	public Matrix big_square_scratch = new Matrix(getStateDimension(), getStateDimension());
 	
-	public int getStateDimension() {
-		return 2;
-	}
+	public abstract int getStateDimension();
+	
+	public abstract void initializeState(Matrix state_estimate);
 
-	public void initializeState(Matrix state_estimate) {
-		state_estimate.data[0][0] = 0;
-		state_estimate.data[1][0] = 0;
-	}
+	public abstract void initializeCovariance(Matrix estimate_covariance);
 
-	public void initializeCovariance(Matrix estimate_covariance) {
-		estimate_covariance.set_identity_matrix();
-		estimate_covariance.scale_matrix(1000);
-	}
+	public abstract void getNextState(Matrix state_estimate, double dt, Matrix predicted_state);
 
-	public void getNextState(Matrix state_estimate, double dt, Matrix predicted_state) {
-		predicted_state.data[0][0] = state_estimate.data[0][0] + state_estimate.data[1][0] * dt;
-		predicted_state.data[1][0] = state_estimate.data[1][0];
-	}
+	public abstract void getJacobian(Matrix state_estimate, double dt, Matrix state_transition);
 
-	public void getJacobian(Matrix state_estimate, double dt, Matrix state_transition) {
-		state_transition.data[0][0] = 1;
-		state_transition.data[0][1] = dt;
-		state_transition.data[1][0] = 0;
-		state_transition.data[1][1] = 1;
-	}
-
-	public Matrix getProcessNoiseCovariance(double dt, Matrix process_noise_covariance) {
-		process_noise_covariance.data[0][0] = dt;
-		process_noise_covariance.data[1][1] = dt;
-		return process_noise_covariance;
-	}
+	public abstract Matrix getProcessNoiseCovariance(double dt, Matrix process_noise_covariance);
 }
 

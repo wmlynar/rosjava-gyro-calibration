@@ -2,17 +2,18 @@ package com.github.wmlynar.rosjava_gyro_calibration.ekf;
 
 public class ObservationModel {
 	
-	int stateDimension = 2;
-	int observationDimension = 1;
-	Matrix observationValue = new Matrix(observationDimension, 1);
-	Matrix observationModel = new Matrix(observationDimension, 1);
-	Matrix jacobian = new Matrix(observationDimension, stateDimension);
-	Matrix covariance = new Matrix(observationDimension, observationDimension);
+	public int stateDimension = 2;
+	public int observationDimension = 1;
+	
+	public Matrix observation = new Matrix(observationDimension, 1);
+	public Matrix innovation = new Matrix(observationDimension, 1);
+	public Matrix observation_model = new Matrix(observationDimension, stateDimension);
+	public Matrix observation_noise_covariance = new Matrix(observationDimension, observationDimension);
 
-	Matrix temporaryObservationObservationOne = new Matrix(observationDimension, observationDimension);
-	Matrix temporaryObservationObservationTwo = new Matrix(observationDimension, observationDimension);
-	Matrix temporaryStateObservationOne = new Matrix(stateDimension, observationDimension);
-	Matrix temporaryStateObservationTwo = new Matrix(stateDimension, observationDimension);
+	public Matrix innovation_covariance = new Matrix(observationDimension, observationDimension);
+	public Matrix inverse_innovation_covariance = new Matrix(observationDimension, observationDimension);
+	public Matrix vertical_scratch = new Matrix(stateDimension, observationDimension);
+	public Matrix optimal_gain = new Matrix(stateDimension, observationDimension);
 	
 	public int getStateDimension() {
 		return 2;
@@ -23,42 +24,42 @@ public class ObservationModel {
 	}
 
 	public Matrix getObservationMeasurements() {
-		return observationValue;
+		return observation;
 	}
 
 	public Matrix getObservationModel(Matrix state) {
-		observationModel.data[0][0] = state.data[0][0];
-		return observationModel;
+		innovation.data[0][0] = state.data[0][0];
+		return innovation;
 	}
 
 	public Matrix getObservationJacobian() {
-		jacobian.data[0][0] = 1;
-		return jacobian;
+		observation_model.data[0][0] = 1;
+		return observation_model;
 	}
 
 	public Matrix getObservationNoiseCovariance() {
-		covariance.set_identity_matrix();
-		return covariance;
+		observation_noise_covariance.set_identity_matrix();
+		return observation_noise_covariance;
 	}
 	
 	public Matrix getTemporaryMatrixObservationObservationOne() {
-		return temporaryObservationObservationOne;
+		return innovation_covariance;
 	}
 
 	public Matrix getTemporaryMatrixObservationObservationTwo() {
-		return temporaryObservationObservationTwo;
+		return inverse_innovation_covariance;
 	}
 
 	public Matrix getTemporaryMatrixStateObservationOne() {
-		return temporaryStateObservationOne;
+		return vertical_scratch;
 	}
 
 	public Matrix getTemporaryMatrixStateObservationTwo() {
-		return temporaryStateObservationTwo;
+		return optimal_gain;
 	}
 
 	public void setPosition(double x) {
-		observationValue.data[0][0] = x;
+		observation.data[0][0] = x;
 	}
 
 }

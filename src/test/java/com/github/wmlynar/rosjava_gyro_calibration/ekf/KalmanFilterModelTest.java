@@ -23,8 +23,8 @@ public class KalmanFilterModelTest {
             filter.update(1,obs);
         }
         
-        double x = filter.state_estimate.data[0][0];
-        double v = filter.state_estimate.data[1][0];
+        double x = filter.model.state_estimate.data[0][0];
+        double v = filter.model.state_estimate.data[1][0];
         
         assertEquals(x,10,1e-4);
         assertEquals(v,1,1e-4);

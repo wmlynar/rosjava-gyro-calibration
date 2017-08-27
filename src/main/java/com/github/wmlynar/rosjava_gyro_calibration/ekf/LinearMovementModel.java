@@ -3,6 +3,7 @@ package com.github.wmlynar.rosjava_gyro_calibration.ekf;
 public class LinearMovementModel {
 	
 	int stateDimension = 2;
+	Matrix initialState = new Matrix(stateDimension, 1);
 	Matrix state = new Matrix(stateDimension, 1);
 	Matrix jacobian = new Matrix(stateDimension, stateDimension);
 	Matrix covariance = new Matrix(stateDimension, stateDimension);
@@ -13,9 +14,9 @@ public class LinearMovementModel {
 	}
 
 	public Matrix initialState() {
-		state.data[0][0] = 0;
-		state.data[1][0] = 0;
-		return state;
+		initialState.data[0][0] = 0;
+		initialState.data[1][0] = 0;
+		return initialState;
 	}
 
 	public Matrix initialCovariance() {

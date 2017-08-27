@@ -4,13 +4,13 @@ public class ProcessModel {
 	
 	int stateDimension = 2;
 	Matrix initialState = new Matrix(stateDimension, 1);
-	Matrix state = new Matrix(stateDimension, 1);
+	Matrix nextState = new Matrix(stateDimension, 1);
 	Matrix jacobian = new Matrix(stateDimension, stateDimension);
 	Matrix covariance = new Matrix(stateDimension, stateDimension);
 	Matrix noiseCovariance = new Matrix(stateDimension, stateDimension);
 	
-	public int getDimension() {
-		return stateDimension;
+	public int getStateDimension() {
+		return 2;
 	}
 
 	public Matrix getInitialState() {
@@ -26,9 +26,9 @@ public class ProcessModel {
 	}
 
 	public Matrix getNextState(Matrix state_estimate, double dt) {
-		state.data[0][0] = state_estimate.data[0][0] + state_estimate.data[1][0] * dt;
-		state.data[1][0] = state_estimate.data[1][0];
-		return state;
+		nextState.data[0][0] = state_estimate.data[0][0] + state_estimate.data[1][0] * dt;
+		nextState.data[1][0] = state_estimate.data[1][0];
+		return nextState;
 	}
 
 	public Matrix getJacobian(Matrix state_estimate, double dt) {

@@ -14,11 +14,15 @@ public class ObservationModel {
 	Matrix temporaryStateObservationOne = new Matrix(stateDimension, observationDimension);
 	Matrix temporaryStateObservationTwo = new Matrix(stateDimension, observationDimension);
 	
+	public int getStateDimension() {
+		return 2;
+	}
+
 	public int getObservationDimension() {
 		return 1;
 	}
 
-	public Matrix getObservationValue() {
+	public Matrix getObservationMeasurements() {
 		return observationValue;
 	}
 

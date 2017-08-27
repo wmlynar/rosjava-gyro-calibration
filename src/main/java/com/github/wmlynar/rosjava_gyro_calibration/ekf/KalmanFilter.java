@@ -57,7 +57,7 @@ public class KalmanFilter {
 
 	public KalmanFilter(ProcessModel model) {
 		this.model = model;
-		state_dimension = model.getDimension();
+		state_dimension = model.getStateDimension();
 		state_estimate = model.getInitialState();
 		estimate_covariance = model.getInitialCovariance();
 
@@ -111,7 +111,7 @@ public class KalmanFilter {
 		Matrix inverse_innovation_covariance = obs.getTemporaryMatrixObservationObservationTwo();
 		
 		/* Calculate innovation */
-		observation = obs.getObservationValue();
+		observation = obs.getObservationMeasurements();
 		innovation = obs.getObservationModel(predicted_state);
 		Matrix.subtract_matrix(observation, innovation, innovation);
 

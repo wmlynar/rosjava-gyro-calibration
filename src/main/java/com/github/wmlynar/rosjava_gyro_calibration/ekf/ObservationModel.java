@@ -23,39 +23,16 @@ public class ObservationModel {
 		return 1;
 	}
 
-	public Matrix getObservationMeasurements() {
-		return observation;
-	}
-
-	public Matrix getObservationModel(Matrix state) {
+	public void getObservationModel(Matrix state, Matrix innovation) {
 		innovation.data[0][0] = state.data[0][0];
-		return innovation;
 	}
 
-	public Matrix getObservationJacobian() {
+	public void getObservationJacobian(Matrix observation_model) {
 		observation_model.data[0][0] = 1;
-		return observation_model;
 	}
 
-	public Matrix getObservationNoiseCovariance() {
+	public void getObservationNoiseCovariance(Matrix observation_noise_covariance) {
 		observation_noise_covariance.set_identity_matrix();
-		return observation_noise_covariance;
-	}
-	
-	public Matrix getTemporaryMatrixObservationObservationOne() {
-		return innovation_covariance;
-	}
-
-	public Matrix getTemporaryMatrixObservationObservationTwo() {
-		return inverse_innovation_covariance;
-	}
-
-	public Matrix getTemporaryMatrixStateObservationOne() {
-		return vertical_scratch;
-	}
-
-	public Matrix getTemporaryMatrixStateObservationTwo() {
-		return optimal_gain;
 	}
 
 	public void setPosition(double x) {

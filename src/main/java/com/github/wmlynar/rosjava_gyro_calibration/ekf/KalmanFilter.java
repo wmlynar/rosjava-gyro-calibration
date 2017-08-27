@@ -14,7 +14,7 @@ package com.github.wmlynar.rosjava_gyro_calibration.ekf;
 public class KalmanFilter {
 
 	/* These parameters define the size of the matrices. */
-	int state_dimension;
+//	int state_dimension;
 
 	/* This group of matrices must be specified by the user. */
 	/* F_k */
@@ -57,9 +57,9 @@ public class KalmanFilter {
 
 	public KalmanFilter(ProcessModel model) {
 		this.model = model;
-		state_dimension = model.getStateDimension();
-		model.state_estimate = model.initializeState();
-		model.estimate_covariance = model.initializeCovariance();
+//		state_dimension = model.getStateDimension();
+		model.initializeState(model.state_estimate);
+		model.initializeCovariance(model.estimate_covariance);
 
 //		model.predicted_estimate_covariance = new Matrix(state_dimension,	state_dimension);
 //		innovation_covariance = new Matrix(observation_dimension, observation_dimension);
@@ -92,11 +92,11 @@ public class KalmanFilter {
 	/* Just the prediction phase of update. */
 	void predict(double dt) {
 		/* Predict the state */
-		model.predicted_state = model.getNextState(model.state_estimate, dt);
+		model.getNextState(model.state_estimate, dt, model.predicted_state);
 		
 		/* Predict the state estimate covariance */
-		model.state_transition = model.getJacobian(model.state_estimate, dt);
-		model.process_noise_covariance = model.getProcessNoiseCovariance(dt);
+		model.getJacobian(model.state_estimate, dt, model.state_transition);
+		model.getProcessNoiseCovariance(dt, model.process_noise_covariance);
 		Matrix.multiply_matrix(model.state_transition, model.estimate_covariance, model.big_square_scratch);
 		Matrix.multiply_by_transpose_matrix(model.big_square_scratch, model.state_transition, model.predicted_estimate_covariance);
 		Matrix.add_matrix(model.predicted_estimate_covariance, model.process_noise_covariance, model.predicted_estimate_covariance);
@@ -104,20 +104,13 @@ public class KalmanFilter {
 
 	/* Just the estimation phase of update. */
 	void estimate(double dt, ObservationModel obs) {
-		// get temporary matrices
-		obs.vertical_scratch = obs.getTemporaryMatrixStateObservationOne();
-		obs.optimal_gain = obs.getTemporaryMatrixStateObservationTwo();
-		obs.innovation_covariance = obs.getTemporaryMatrixObservationObservationOne();
-		obs.inverse_innovation_covariance = obs.getTemporaryMatrixObservationObservationTwo();
-		
 		/* Calculate innovation */
-		obs.observation = obs.getObservationMeasurements();
-		obs.innovation = obs.getObservationModel(model.predicted_state);
+		obs.getObservationModel(model.predicted_state, obs.innovation);
 		Matrix.subtract_matrix(obs.observation, obs.innovation, obs.innovation);
 
 		/* Calculate innovation covariance */
-		obs.observation_model = obs.getObservationJacobian();
-		obs.observation_noise_covariance = obs.getObservationNoiseCovariance();
+		obs.getObservationJacobian(obs.observation_model);
+		obs.getObservationNoiseCovariance(obs.observation_noise_covariance);
 		Matrix.multiply_by_transpose_matrix(model.predicted_estimate_covariance, obs.observation_model, obs.vertical_scratch);
 		Matrix.multiply_matrix(obs.observation_model, obs.vertical_scratch, obs.innovation_covariance);
 		Matrix.add_matrix(obs.innovation_covariance, obs.observation_noise_covariance, obs.innovation_covariance);

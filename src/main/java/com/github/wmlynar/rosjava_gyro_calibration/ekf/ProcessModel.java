@@ -1,6 +1,6 @@
 package com.github.wmlynar.rosjava_gyro_calibration.ekf;
 
-public class AbstractProcessModel {
+public class ProcessModel {
 	
 	int stateDimension = 2;
 	Matrix initialState = new Matrix(stateDimension, 1);

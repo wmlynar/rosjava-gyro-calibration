@@ -53,9 +53,9 @@ public class KalmanFilter {
 //	Matrix small_square_scratch;
 	Matrix big_square_scratch;
 
-	private AbstractProcessModel model;
+	private ProcessModel model;
 
-	public KalmanFilter(AbstractProcessModel model) {
+	public KalmanFilter(ProcessModel model) {
 		this.model = model;
 		state_dimension = model.getStateDimension();
 		state_estimate = model.getInitialState();
@@ -84,7 +84,7 @@ public class KalmanFilter {
 	 * It is also advisable to initialize with reasonable guesses for
 	 * f.state_estimate f.estimate_covariance
 	 */
-	void update(double dt, AbstractObservationModel obs) {
+	void update(double dt, ObservationModel obs) {
 		predict(dt);
 		estimate(dt, obs);
 	}
@@ -103,7 +103,7 @@ public class KalmanFilter {
 	}
 
 	/* Just the estimation phase of update. */
-	void estimate(double dt, AbstractObservationModel obs) {
+	void estimate(double dt, ObservationModel obs) {
 		// get temporary matrices
 		Matrix vertical_scratch = obs.getTemporaryMatrixStateObservationOne();
 		Matrix optimal_gain = obs.getTemporaryMatrixStateObservationTwo();

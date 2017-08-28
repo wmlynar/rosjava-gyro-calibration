@@ -6,8 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.wmlynar.ekf.KalmanFilter;
-import com.github.wmlynar.ekf.examples.AngleObservationModel;
-import com.github.wmlynar.ekf.examples.AngleProcessModel;
+import com.github.wmlynar.ekf.examples.SpeedAngleObservationModel;
+import com.github.wmlynar.ekf.examples.SpeedAngleProcessModel;
 import com.github.wmlynar.ekf.examples.Linear1dObservationModel;
 import com.github.wmlynar.ekf.examples.Linear1dProcessModel;
 
@@ -19,8 +19,8 @@ public class AngleModelTest {
 
 	@Test
 	public void test() {
-		AngleProcessModel model = new AngleProcessModel();
-		AngleObservationModel obs = new AngleObservationModel();
+		SpeedAngleProcessModel model = new SpeedAngleProcessModel();
+		SpeedAngleObservationModel obs = new SpeedAngleObservationModel();
 		KalmanFilter filter = new KalmanFilter(model);
 		
         for (int i = 0; i <= 10; ++i) {

@@ -3,7 +3,7 @@ package com.github.wmlynar.ekf.examples;
 import com.github.wmlynar.ekf.Matrix;
 import com.github.wmlynar.ekf.ProcessModel;
 
-public class AngleProcessModel extends ProcessModel {
+public class SpeedAngleProcessModel extends ProcessModel {
 
 	@Override
 	public int stateDimension() {

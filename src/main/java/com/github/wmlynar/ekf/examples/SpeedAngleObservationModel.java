@@ -3,7 +3,7 @@ package com.github.wmlynar.ekf.examples;
 import com.github.wmlynar.ekf.Matrix;
 import com.github.wmlynar.ekf.ObservationModel;
 
-public class AngleObservationModel extends ObservationModel {
+public class SpeedAngleObservationModel extends ObservationModel {
 
 	private double x;
 	private double y;

@@ -14,35 +14,35 @@ public class Linear2dObservationModel extends ObservationModel {
 	}
 	
 	@Override
-	public int getStateDimension() {
+	public int stateDimension() {
 		return 4;
 	}
 
 	@Override
-	public int getObservationDimension() {
+	public int observationDimension() {
 		return 2;
 	}
 
 	@Override
-	public void getObservation(Matrix observation) {
-		observation.data[0][0] = x;
-		observation.data[1][0] = y;
+	public void observationMeasurement(Matrix observation_measured) {
+		observation_measured.data[0][0] = x;
+		observation_measured.data[1][0] = y;
 	}
 
 	@Override
-	public void getObservationModel(Matrix state, Matrix innovation) {
-		innovation.data[0][0] = state.data[0][0];
-		innovation.data[1][0] = state.data[2][0];
+	public void observationModel(Matrix state, Matrix observation_predicted) {
+		observation_predicted.data[0][0] = state.data[0][0];
+		observation_predicted.data[1][0] = state.data[2][0];
 	}
 
 	@Override
-	public void getObservationJacobian(Matrix observation_model) {
-		observation_model.data[0][0] = 1;
-		observation_model.data[1][2] = 1;
+	public void observationModelJacobian(Matrix observation_jacobian) {
+		observation_jacobian.data[0][0] = 1;
+		observation_jacobian.data[1][2] = 1;
 	}
 
 	@Override
-	public void getObservationNoiseCovariance(Matrix observation_noise_covariance) {
+	public void observationNoiseCovariance(Matrix observation_noise_covariance) {
 		observation_noise_covariance.set_identity_matrix();
 	}
 

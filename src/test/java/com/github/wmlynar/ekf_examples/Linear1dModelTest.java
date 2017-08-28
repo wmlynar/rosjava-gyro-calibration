@@ -6,10 +6,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.wmlynar.ekf.KalmanFilter;
-import com.github.wmlynar.ekf_examples.LinearObservationModel;
-import com.github.wmlynar.ekf_examples.LinearProcessModel;
+import com.github.wmlynar.ekf_examples.Linear1dObservationModel;
+import com.github.wmlynar.ekf_examples.Linear1dProcessModel;
 
-public class KalmanFilterModelTest {
+public class Linear1dModelTest {
 
 	@Before
 	public void setUp() throws Exception {
@@ -17,8 +17,8 @@ public class KalmanFilterModelTest {
 
 	@Test
 	public void test() {
-		LinearProcessModel model = new LinearProcessModel();
-		LinearObservationModel obs = new LinearObservationModel();
+		Linear1dProcessModel model = new Linear1dProcessModel();
+		Linear1dObservationModel obs = new Linear1dObservationModel();
 		KalmanFilter filter = new KalmanFilter(model);
 		
         for (int i = 0; i <= 10; ++i) {

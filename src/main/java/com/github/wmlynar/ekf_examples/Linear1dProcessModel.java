@@ -3,7 +3,7 @@ package com.github.wmlynar.ekf_examples;
 import com.github.wmlynar.ekf.Matrix;
 import com.github.wmlynar.ekf.ProcessModel;
 
-public class LinearProcessModel extends ProcessModel {
+public class Linear1dProcessModel extends ProcessModel {
 
 	@Override
 	public int getStateDimension() {

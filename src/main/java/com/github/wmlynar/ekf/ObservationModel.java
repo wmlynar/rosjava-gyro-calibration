@@ -16,11 +16,11 @@ public abstract class ObservationModel {
 
 	public abstract int getObservationDimension();
 
-	public abstract void getObservation(Matrix observation);
+	public abstract void getObservation(Matrix observation_measured);
 	
-	public abstract void getObservationModel(Matrix state, Matrix innovation);
+	public abstract void getObservationModel(Matrix state, Matrix observation_predicted);
 
-	public abstract void getObservationJacobian(Matrix observation_model);
+	public abstract void getObservationJacobian(Matrix observation_jacobian);
 
 	public abstract void getObservationNoiseCovariance(Matrix observation_noise_covariance);
 }

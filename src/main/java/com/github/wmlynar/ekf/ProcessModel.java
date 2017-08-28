@@ -12,13 +12,13 @@ public abstract class ProcessModel {
 	
 	public abstract int getStateDimension();
 	
-	public abstract void initializeState(Matrix state_estimate);
+	public abstract void initializeState(Matrix state);
 
-	public abstract void initializeCovariance(Matrix estimate_covariance);
+	public abstract void initializeCovariance(Matrix state_covariance);
 
-	public abstract void getNextState(Matrix state_estimate, double dt, Matrix predicted_state);
+	public abstract void getNextState(Matrix state, double dt, Matrix predicted_state);
 
-	public abstract void getJacobian(Matrix state_estimate, double dt, Matrix state_transition);
+	public abstract void getJacobian(Matrix state, double dt, Matrix jacobian);
 
 	public abstract void getProcessNoiseCovariance(double dt, Matrix process_noise_covariance);
 }

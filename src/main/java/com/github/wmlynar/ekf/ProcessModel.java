@@ -20,6 +20,6 @@ public abstract class ProcessModel {
 
 	public abstract void getJacobian(Matrix state_estimate, double dt, Matrix state_transition);
 
-	public abstract Matrix getProcessNoiseCovariance(double dt, Matrix process_noise_covariance);
+	public abstract void getProcessNoiseCovariance(double dt, Matrix process_noise_covariance);
 }
 

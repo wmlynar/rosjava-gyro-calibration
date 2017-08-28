@@ -2,9 +2,6 @@ package com.github.wmlynar.ekf;
 
 public abstract class ObservationModel {
 	
-	public int stateDimension = 2;
-	public int observationDimension = 1;
-	
 	public Matrix observation = new Matrix(getObservationDimension(), 1);
 	public Matrix innovation = new Matrix(getObservationDimension(), 1);
 	public Matrix observation_model = new Matrix(getObservationDimension(), getStateDimension());

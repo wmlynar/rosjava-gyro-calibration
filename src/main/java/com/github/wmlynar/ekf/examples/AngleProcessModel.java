@@ -1,9 +1,9 @@
-package com.github.wmlynar.ekf_examples;
+package com.github.wmlynar.ekf.examples;
 
 import com.github.wmlynar.ekf.Matrix;
 import com.github.wmlynar.ekf.ProcessModel;
 
-public class Linear2dProcessModel extends ProcessModel {
+public class AngleProcessModel extends ProcessModel {
 
 	@Override
 	public int stateDimension() {
@@ -26,22 +26,24 @@ public class Linear2dProcessModel extends ProcessModel {
 
 	@Override
 	public void predictionModel(Matrix state, double dt, Matrix predicted_state) {
-		predicted_state.data[0][0] = state.data[0][0] + state.data[1][0] * dt;
-		predicted_state.data[1][0] = state.data[1][0];
-		predicted_state.data[2][0] = state.data[2][0] + state.data[3][0] * dt;
+		predicted_state.data[0][0] = state.data[0][0] + state.data[2][0] * Math.sin(state.data[3][0]) * dt;
+		predicted_state.data[1][0] = state.data[1][0] + state.data[2][0] * Math.cos(state.data[3][0]) * dt;
+		predicted_state.data[2][0] = state.data[2][0];
 		predicted_state.data[3][0] = state.data[3][0];
 	}
 
 	@Override
 	public void predictionModelJacobian(Matrix state, double dt, Matrix predicted_state_jacobian) {
 		predicted_state_jacobian.set_identity_matrix();
-		predicted_state_jacobian.data[0][1] = dt;
-		predicted_state_jacobian.data[2][3] = dt;
+		predicted_state_jacobian.data[0][2] = Math.sin(state.data[3][0]) * dt;
+		predicted_state_jacobian.data[0][3] = state.data[2][0] * Math.cos(state.data[3][0]) * dt;
+		predicted_state_jacobian.data[1][2] = Math.cos(state.data[3][0]) * dt;
+		predicted_state_jacobian.data[1][3] = -state.data[2][0] * Math.sin(state.data[3][0]) * dt;
 	}
 
 	@Override
 	public void processNoiseCovariance(double dt, Matrix process_noise_covariance) {
-		estimate_covariance.set_identity_matrix();
-		estimate_covariance.scale_matrix(dt);
+		process_noise_covariance.set_identity_matrix();
+		process_noise_covariance.scale_matrix(dt);
 	}
 }

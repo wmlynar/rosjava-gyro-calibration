@@ -1,9 +1,9 @@
-package com.github.wmlynar.ekf_examples;
+package com.github.wmlynar.ekf.examples;
 
 import com.github.wmlynar.ekf.Matrix;
 import com.github.wmlynar.ekf.ObservationModel;
 
-public class AngleObservationModel extends ObservationModel {
+public class Linear2dObservationModel extends ObservationModel {
 
 	private double x;
 	private double y;
@@ -32,13 +32,13 @@ public class AngleObservationModel extends ObservationModel {
 	@Override
 	public void observationModel(Matrix state, Matrix observation_predicted) {
 		observation_predicted.data[0][0] = state.data[0][0];
-		observation_predicted.data[1][0] = state.data[1][0];
+		observation_predicted.data[1][0] = state.data[2][0];
 	}
 
 	@Override
 	public void observationModelJacobian(Matrix observation_jacobian) {
 		observation_jacobian.data[0][0] = 1;
-		observation_jacobian.data[1][1] = 1;
+		observation_jacobian.data[1][2] = 1;
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package com.github.wmlynar.ekf_examples;
+package com.github.wmlynar.ekf.examples;
 
 import static org.junit.Assert.*;
 
@@ -6,8 +6,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.wmlynar.ekf.KalmanFilter;
-import com.github.wmlynar.ekf_examples.Linear1dObservationModel;
-import com.github.wmlynar.ekf_examples.Linear1dProcessModel;
+import com.github.wmlynar.ekf.examples.AngleObservationModel;
+import com.github.wmlynar.ekf.examples.AngleProcessModel;
+import com.github.wmlynar.ekf.examples.Linear1dObservationModel;
+import com.github.wmlynar.ekf.examples.Linear1dProcessModel;
 
 public class AngleModelTest {
 

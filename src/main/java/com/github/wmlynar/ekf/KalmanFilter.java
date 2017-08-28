@@ -13,62 +13,13 @@ package com.github.wmlynar.ekf;
 
 public class KalmanFilter {
 
-	/* These parameters define the size of the matrices. */
-//	int state_dimension;
-
-	/* This group of matrices must be specified by the user. */
-	/* F_k */
-//	Matrix state_transition;
-	/* H_k */
-//	Matrix observation_model;
-	/* Q_k */
-//	Matrix process_noise_covariance;
-	/* R_k */
-//	Matrix observation_noise_covariance;
-
-	/* The observation is modified by the user beforekalmangpsevery time step. */
-	/* z_k */
-//	Matrix observation;
-
-	/* This group of matrices are updated every time step by the filter. */
-	/* x-hat_k|k-1 */
-//	Matrix predicted_state;
-	/* P_k|k-1 */
-//	Matrix predicted_estimate_covariance;
-	/* y-tilde_k */
-//	Matrix innovation;
-	/* S_k */
-//	Matrix innovation_covariance;
-	/* S_k^-1 */
-//	Matrix inverse_innovation_covariance;
-	/* K_k */
-//	Matrix optimal_gain;
-	/* x-hat_k|k */
-//	Matrix state_estimate;
-	/* P_k|k */
-//	Matrix estimate_covariance;
-
-	/* This group is used for meaningless intermediate calculations */
-//	Matrix vertical_scratch;
-//	Matrix small_square_scratch;
-//	Matrix big_square_scratch;
-
 	public ProcessModel model;
 
 	public KalmanFilter(ProcessModel model) {
 		this.model = model;
-//		state_dimension = model.getStateDimension();
+		
 		model.initialState(model.state_estimate);
 		model.initialStateCovariance(model.estimate_covariance);
-
-//		model.predicted_estimate_covariance = new Matrix(state_dimension,	state_dimension);
-//		innovation_covariance = new Matrix(observation_dimension, observation_dimension);
-//		inverse_innovation_covariance = new Matrix(observation_dimension, observation_dimension);
-//		optimal_gain = new Matrix(state_dimension, observation_dimension);
-
-//		vertical_scratch = new Matrix(state_dimension, observation_dimension);
-//		small_square_scratch = new Matrix(observation_dimension,observation_dimension);
-//		model.big_square_scratch = new Matrix(state_dimension, state_dimension);
 	}
 
 	/*
@@ -105,8 +56,8 @@ public class KalmanFilter {
 	/* Just the estimation phase of update. */
 	void estimate(double dt, ObservationModel obs) {
 		/* Calculate innovation */
-		obs.observationModel(model.predicted_state, obs.innovation);
 		obs.observationMeasurement(obs.observation);
+		obs.observationModel(model.predicted_state, obs.innovation);
 		Matrix.subtract_matrix(obs.observation, obs.innovation, obs.innovation);
 
 		/* Calculate innovation covariance */

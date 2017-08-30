@@ -23,7 +23,7 @@ public class RobotAngleObservation extends ObservationModel {
 
 	@Override
 	public void observationModel(double[][] x, double[][] h) {
-		h[0][0] = 3;
+		h[0][0] = x[RobotProcess.A][0];
 	}
 
 	@Override

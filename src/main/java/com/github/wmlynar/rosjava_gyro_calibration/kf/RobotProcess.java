@@ -8,7 +8,7 @@ public class RobotProcess extends ProcessModel {
 	public static int Y = 1;
 	public static int S = 2;
 	public static int A = 3;
-	public static int O = 4;
+	public static int ROT = 4;
 	public static int B = 5;
 	public static int L = 6;
 	public static int R = 7;
@@ -24,22 +24,22 @@ public class RobotProcess extends ProcessModel {
 		x[Y][0] = 0;
 		x[S][0] = 0;
 		x[A][0] = 0;
-		x[O][0] = 0;
-		x[B][0] = 15;
+		x[ROT][0] = 0;
+		x[B][0] = 10;
 		x[L][0] = 0;
 		x[R][0] = 0;
 	}
 
 	@Override
 	public void initialStateCovariance(double[][] cov) {
-		cov[X][X] = 10;
-		cov[Y][Y] = 10;
+		cov[X][X] = 0.001;
+		cov[Y][Y] = 0.001;
 		cov[S][S] = 10;
-		cov[A][A] = 10;
-		cov[O][O] = 10;
-		cov[B][B] = 1000;
-		cov[L][L] = 10;
-		cov[R][R] = 10;
+		cov[A][A] = 0.001;
+		cov[ROT][ROT] = 0.001;
+		cov[B][B] = 0.001;
+		cov[L][L] = 0.001;
+		cov[R][R] = 0.001;
 	}
 
 	@Override
@@ -47,38 +47,62 @@ public class RobotProcess extends ProcessModel {
 		f[X][0] = x[S][0] * Math.sin(x[A][0]);
 		f[Y][0] = x[S][0] * Math.cos(x[A][0]);
 		f[S][0] = 0;
-		f[A][0] = x[R][0];
-		f[O][0] = 0;
+		f[A][0] = x[ROT][0];
+		f[ROT][0] = 0;
 		f[B][0] = 0;
-		f[L][0] = x[S][0] + x[B][0]*x[O][0];
-		f[R][0] = x[S][0] - x[B][0]*x[O][0];
+		f[L][0] = x[S][0] + x[B][0]*x[ROT][0];
+		f[R][0] = x[S][0] - x[B][0]*x[ROT][0];
 	}
 
 	@Override
 	public void stateFunctionJacobian(double[][] x, double[][] j) {
 		j[X][S] = Math.sin(x[A][0]);
-		j[X][A] = x[A][0] * Math.cos(x[A][0]);
+		j[X][A] = x[S][0] * Math.cos(x[A][0]);
 		j[Y][S] = Math.cos(x[A][0]);
-		j[Y][A] = -x[A][0] * Math.sin(x[A][0]);
-		j[A][R] = 1;
+		j[Y][A] = -x[S][0] * Math.sin(x[A][0]);
+		j[A][ROT] = 1;
 		j[L][S] = 1;
-		j[L][B] = x[O][0];
-		j[L][O] = x[B][0];
+		j[L][B] = x[ROT][0];
+		j[L][ROT] = x[B][0];
 		j[R][S] = 1;
-		j[R][B] = -x[O][0];
-		j[R][O] = -x[B][0];
+		j[R][B] = -x[ROT][0];
+		j[R][ROT] = -x[B][0];
 	}
 
 	@Override
 	public void processNoiseCovariance(double[][] cov) {
-		cov[X][X] = 1;
-		cov[Y][Y] = 1;
-		cov[S][S] = 1;
-		cov[A][A] = 1;
-		cov[O][O] = 1;
-		cov[B][B] = 1;
-		cov[L][L] = 1;
-		cov[R][R] = 1;
+		cov[X][X] = 1e-4;
+		cov[Y][Y] = 1e-4;
+		cov[S][S] = 1e-4;
+		cov[A][A] = 1e-4;
+		cov[ROT][ROT] = 1e-4;
+		cov[B][B] = 1e-4;
+		cov[L][L] = 1e-4;
+		cov[R][R] = 1e-4;
+	}
+	
+	public double getX() {
+		return getState()[X][0];
+	}
+
+	public double getY() {
+		return getState()[Y][0];
+	}
+
+	public double getDistanceLeft() {
+		return getState()[L][0];
+	}
+
+	public double getDistanceRight() {
+		return getState()[R][0];
+	}
+
+	public double getSpeed() {
+		return getState()[S][0];
+	}
+
+	public double getAngle() {
+		return getState()[A][0];
 	}
 
 }

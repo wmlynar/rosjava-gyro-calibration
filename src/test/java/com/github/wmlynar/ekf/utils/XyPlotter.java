@@ -14,7 +14,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
-public class XyTimePlotter extends ApplicationFrame{
+public class XyPlotter extends ApplicationFrame{
 	
 	private JFreeChart chart;
 	private XYPlot plot;
@@ -25,12 +25,11 @@ public class XyTimePlotter extends ApplicationFrame{
 	private XYSeriesCollection data = new XYSeriesCollection();
 	private HashMap<String, XYSeries> seriesMap = new HashMap<String, XYSeries>();
 	private int maxItems = -1;
-	private double maximumXRange = -1;
 
-	public XyTimePlotter(String title) {
+	public XyPlotter(String title) {
 		super(title);
 		
-		chart = ChartFactory.createXYLineChart("XY Series Demo", "X", "Y", data,
+		chart = ChartFactory.createScatterPlot("XY Series Demo", "X", "Y", data,
 				PlotOrientation.VERTICAL, true, true, false);
 
 		plot = (XYPlot) chart.getPlot();
@@ -57,11 +56,7 @@ public class XyTimePlotter extends ApplicationFrame{
 		}
 	}
 	
-	public void setMaximumXRange(double range) {
-		this.maximumXRange = range;
-	}
-
-	public void addValues(String name, double x, double d) {
+	public void addValues(String name, double x, double y) {
 		XYSeries series = seriesMap.get(name);
 		if(series==null) {
 			series = new XYSeries(name);
@@ -71,40 +66,17 @@ public class XyTimePlotter extends ApplicationFrame{
 			seriesMap.put(name, series);
 			data.addSeries(series);
 		}
-		series.add(x, d);
-		if(this.maximumXRange>0) {
-			filterRange(series);
-		}
+		series.add(x, y);
 	}
 
-	private void filterRange(XYSeries series) {
-		int count = series.getItemCount();
-		if(count<1) {
-			return;
-		}
-		double lastX = series.getX(count - 1).doubleValue();
-		double minX = lastX - this.maximumXRange;
-		int minIndex = -1;
-		for(int i=0; i<count; i++) {
-			if(series.getX(i).doubleValue()<minX) {
-				minIndex = i;
-			} else {
-				break;
-			}
-		}
-		if(minIndex>=0) {
-			series.delete(0, minIndex);
-		}
-	}
 
 	public static void main(String[] args) {
 
-		final XyTimePlotter demo = new XyTimePlotter("XyTimePlotter");
+		final XyPlotter demo = new XyPlotter("XyTimePlotter");
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
 		
 		demo.setMaximumItemCount(10);
-		demo.setMaximumXRange(200);
 		
 		demo.addValues("scan",100,200);
 		demo.addValues("scan",150,230);

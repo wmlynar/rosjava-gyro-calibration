@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.wmlynar.ekf.KalmanFilter;
-import com.github.wmlynar.ekf.utils.XyTimePlotter;
+import com.github.wmlynar.ekf.utils.XTimePlotter;
 
 public class Linear2dModelTest {
 
@@ -21,7 +21,7 @@ public class Linear2dModelTest {
 		KalmanFilter filter = new KalmanFilter(model);
 		filter.setMaximalTimeStep(0.1);
 
-		XyTimePlotter plotter = new XyTimePlotter("EKF Test");
+		XTimePlotter plotter = new XTimePlotter("EKF Test");
 		RefineryUtilities.centerFrameOnScreen(plotter);
 		plotter.setVisible(true);
 

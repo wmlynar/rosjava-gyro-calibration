@@ -20,6 +20,17 @@
 		<pi.deployDirectory>/home/pi/java</pi.deployDirectory>
 	</properties>
 	<dependencies>
+        <!-- external -->
+        <dependency>
+            <groupId>com.github.wmlynar</groupId>
+            <artifactId>extended-kalman-filter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.0.12</version>
+        </dependency>
 		<!-- roscore dependencies -->
 		<dependency>
 			<groupId>org.ros.rosjava_core</groupId>

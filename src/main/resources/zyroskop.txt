@@ -53,6 +53,11 @@ https://github.com/redfish64/TinyTravelTracker/blob/master/app/src/main/java/ika
 https://github.com/yasushi-saito/GpsKalmanFilter/blob/master/src/com/ysaito/gpskalmanfilter/GpsKalmanFilter.java
 
 
+----------
+
+
+ [x]   [v] 
+ [v] = [0]
 
 
 

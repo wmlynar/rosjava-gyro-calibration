@@ -1,15 +1,12 @@
 package com.github.wmlynar.ekf.examples;
 
-import static org.junit.Assert.*;
-
+import org.jfree.ui.RefineryUtilities;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.github.wmlynar.ekf.KalmanFilter;
-import com.github.wmlynar.ekf.examples.Linear1dObservationModel;
-import com.github.wmlynar.ekf.examples.Linear1dProcessModel;
-import com.github.wmlynar.ekf.examples.Linear2dObservationModel;
-import com.github.wmlynar.ekf.examples.Linear2dProcessModel;
+import com.github.wmlynar.ekf.utils.XyTimePlotter;
 
 public class Linear2dModelTest {
 
@@ -22,21 +19,30 @@ public class Linear2dModelTest {
 		Linear2dProcessModel model = new Linear2dProcessModel();
 		Linear2dObservationModel obs = new Linear2dObservationModel();
 		KalmanFilter filter = new KalmanFilter(model);
-		
-        for (int i = 0; i <= 10; ++i) {
-        	obs.setPosition(i,i);
-            filter.update(1,obs);
-        }
-        
-        double x = filter.model.state_estimate.data[0][0];
-        double vx = filter.model.state_estimate.data[1][0];
-        double y = filter.model.state_estimate.data[2][0];
-        double vy = filter.model.state_estimate.data[3][0];
-        
-        assertEquals(10,x,1e-2);
-        assertEquals(1,vx,1e-6);
-        assertEquals(10,y,1e-2);
-        assertEquals(1,vy,1e-6);
+		filter.setMaximalTimeStep(0.1);
+
+		XyTimePlotter plotter = new XyTimePlotter("EKF Test");
+		RefineryUtilities.centerFrameOnScreen(plotter);
+		plotter.setVisible(true);
+
+		for (int i = 0; i <= 10; ++i) {
+			double time = i;
+			obs.setPosition(i, i);
+			filter.update(time, obs);
+			
+			plotter.addValues("x",time,model.getState()[0][0]);
+			plotter.addValues("v",time,model.getState()[1][0]);
+		}
+
+		double x = filter.model.state_estimate.data[0][0];
+		double vx = filter.model.state_estimate.data[1][0];
+		double y = filter.model.state_estimate.data[2][0];
+		double vy = filter.model.state_estimate.data[3][0];
+
+		Assert.assertEquals(10, x, 1e-5);
+		Assert.assertEquals(1, vx, 1e-5);
+		Assert.assertEquals(10, y, 1e-5);
+		Assert.assertEquals(1, vy, 1e-5);
 	}
 
 }

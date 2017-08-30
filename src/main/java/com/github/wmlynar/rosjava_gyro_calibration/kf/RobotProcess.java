@@ -73,9 +73,9 @@ public class RobotProcess extends ProcessModel {
 	public void processNoiseCovariance(double[][] cov) {
 		cov[X][X] = 1e-4;
 		cov[Y][Y] = 1e-4;
-		cov[S][S] = 1e-4;
+		cov[S][S] = 1e-2;
 		cov[A][A] = 1e-4;
-		cov[ROT][ROT] = 1e-4;
+		cov[ROT][ROT] = 1e-2;
 		cov[B][B] = 1e-4;
 		cov[L][L] = 1e-4;
 		cov[R][R] = 1e-4;

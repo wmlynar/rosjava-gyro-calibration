@@ -19,9 +19,9 @@ public class Simulator {
 		filter.setMaximalTimeStep(0.01);
 		
 		RobotSimulator simulator = new RobotSimulator();
-		simulator.setRotationNoise(0.01);
+		simulator.setRotationNoise(10);
 		simulator.setSpeed(1);
-		simulator.setAccelerationNoise(0.01);
+		simulator.setAccelerationNoise(0.1);
 		simulator.setTimeStep(0.0001);
 		
 		
@@ -42,7 +42,7 @@ public class Simulator {
 		plotAngle.setVisible(true);
 		
 		int i=0;
-		for(double d = 0; d<20; d+=0.1) {
+		for(double d = 0; d<100; d+=0.1) {
 			simulator.simulate(d);
 			if(i%10==0) {
 				plotXy.addValues("sim position", simulator.getX(), simulator.getY());

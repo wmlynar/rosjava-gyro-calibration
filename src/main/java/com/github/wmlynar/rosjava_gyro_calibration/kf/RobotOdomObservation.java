@@ -25,14 +25,14 @@ public class RobotOdomObservation extends ObservationModel {
 
 	@Override
 	public void observationModel(double[][] x, double[][] h) {
-		h[0][0] = x[RobotProcess.L][0];
-		h[1][0] = x[RobotProcess.R][0];
+		h[0][0] = x[RobotModel.L][0];
+		h[1][0] = x[RobotModel.R][0];
 	}
 
 	@Override
 	public void observationModelJacobian(double[][] x, double[][] j) {
-		j[0][RobotProcess.L] = 1;
-		j[1][RobotProcess.R] = 1;
+		j[0][RobotModel.L] = 1;
+		j[1][RobotModel.R] = 1;
 	}
 
 	@Override

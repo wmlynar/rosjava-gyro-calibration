@@ -14,7 +14,7 @@ public class OdomTest {
 	@Test
 	public void test() {
 		RobotAngleObservation obs = new RobotAngleObservation();
-		RobotProcess process = new RobotProcess();
+		RobotModel process = new RobotModel();
 		KalmanFilter filter = new KalmanFilter(process);
 		
 		RobotSimulator simulator = new RobotSimulator();

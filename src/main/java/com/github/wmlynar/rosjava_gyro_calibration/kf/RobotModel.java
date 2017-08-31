@@ -2,7 +2,7 @@ package com.github.wmlynar.rosjava_gyro_calibration.kf;
 
 import com.github.wmlynar.ekf.ProcessModel;
 
-public class RobotProcess extends ProcessModel {
+public class RobotModel extends ProcessModel {
 	
 	public static int X = 0;
 	public static int Y = 1;

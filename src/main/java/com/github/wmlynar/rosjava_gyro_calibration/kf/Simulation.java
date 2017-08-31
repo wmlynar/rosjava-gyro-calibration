@@ -13,7 +13,7 @@ public class Simulation {
 		RobotAngleObservation angleObs = new RobotAngleObservation();
 		RobotOdomObservation odomObs = new RobotOdomObservation();
 		BeaconObservation beaconObs = new BeaconObservation();
-		RobotProcess process = new RobotProcess();
+		RobotModel process = new RobotModel();
 		KalmanFilter filter = new KalmanFilter(process);
 		filter.setMaximalTimeStep(0.5);
 		

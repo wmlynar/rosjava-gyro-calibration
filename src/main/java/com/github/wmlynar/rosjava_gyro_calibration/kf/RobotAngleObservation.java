@@ -23,12 +23,12 @@ public class RobotAngleObservation extends ObservationModel {
 
 	@Override
 	public void observationModel(double[][] x, double[][] h) {
-		h[0][0] = x[RobotProcess.A][0];
+		h[0][0] = x[RobotModel.A][0];
 	}
 
 	@Override
 	public void observationModelJacobian(double[][] x, double[][] j) {
-		j[0][RobotProcess.A] = 1;
+		j[0][RobotModel.A] = 1;
 	}
 
 	@Override

@@ -1,14 +1,12 @@
-package com.github.wmlynar.ekf.utils;
+package com.github.wmlynar.rosjava_gyro_calibration.kf;
 
 import org.jfree.ui.RefineryUtilities;
 
 import com.github.wmlynar.ekf.KalmanFilter;
-import com.github.wmlynar.rosjava_gyro_calibration.kf.RobotAngleObservation;
-import com.github.wmlynar.rosjava_gyro_calibration.kf.RobotOdomObservation;
-import com.github.wmlynar.rosjava_gyro_calibration.kf.RobotProcess;
-import com.github.wmlynar.rosjava_gyro_calibration.kf.RobotSimulator;
+import com.github.wmlynar.ekf.utils.XTimePlotter;
+import com.github.wmlynar.ekf.utils.XyPlotter;
 
-public class Simulator {
+public class Simulation {
 	
 	public static void main(String[] args) {
 

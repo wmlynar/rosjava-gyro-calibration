@@ -13,7 +13,7 @@ public class RobotAngleObservation extends ObservationModel {
 
 	@Override
 	public int stateDimension() {
-		return 8;
+		return 10;
 	}
 
 	@Override

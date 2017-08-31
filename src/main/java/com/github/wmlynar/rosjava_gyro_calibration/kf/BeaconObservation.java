@@ -52,8 +52,8 @@ public class BeaconObservation extends ObservationModel {
 
 	@Override
 	public void observationNoiseCovariance(double[][] cov) {
-		cov[0][0] = 1e-0;
-		cov[1][1] = 1e-0;
+		cov[0][0] = 1e-1;
+		cov[1][1] = 1e-1;
 	}
 
 }

@@ -27,7 +27,7 @@ public class RobotProcess extends ProcessModel {
 		x[S][0] = 0;
 		x[A][0] = 0;
 		x[ROT][0] = 0;
-		x[B][0] = 10;
+		x[B][0] = 12;
 		x[L][0] = 0;
 		x[R][0] = 0;
 		x[X1][0] = -100;
@@ -41,7 +41,7 @@ public class RobotProcess extends ProcessModel {
 		cov[S][S] = 10;
 		cov[A][A] = 0.001;
 		cov[ROT][ROT] = 0.001;
-		cov[B][B] = 0.001;
+		cov[B][B] = 10;
 		cov[L][L] = 0.001;
 		cov[R][R] = 0.001;
 		cov[X1][X1] = 1000;
@@ -81,16 +81,16 @@ public class RobotProcess extends ProcessModel {
 
 	@Override
 	public void processNoiseCovariance(double[][] cov) {
-		cov[X][X] = 1e-4;
-		cov[Y][Y] = 1e-4;
-		cov[S][S] = 1e-2;
-		cov[A][A] = 1e-4;
-		cov[ROT][ROT] = 1e-2;
+		cov[X][X] = 1e-6;
+		cov[Y][Y] = 1e-6;
+		cov[S][S] = 1e-1;
+		cov[A][A] = 1e-6;
+		cov[ROT][ROT] = 1e-1;
 		cov[B][B] = 1e-4;
-		cov[L][L] = 1e-4;
-		cov[R][R] = 1e-4;
-		cov[X1][X1] = 1e-4;
-		cov[Y1][Y1] = 1e-4;
+		cov[L][L] = 1e-6;
+		cov[R][R] = 1e-6;
+		cov[X1][X1] = 1e-6;
+		cov[Y1][Y1] = 1e-6;
 	}
 	
 	public double getX() {
@@ -115,6 +115,10 @@ public class RobotProcess extends ProcessModel {
 
 	public double getAngle() {
 		return getState()[A][0];
+	}
+
+	public double getWidth() {
+		return getState()[B][0];
 	}
 
 }

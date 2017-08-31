@@ -15,13 +15,13 @@ public class Simulation {
 		BeaconObservation beaconObs = new BeaconObservation();
 		RobotProcess process = new RobotProcess();
 		KalmanFilter filter = new KalmanFilter(process);
-		filter.setMaximalTimeStep(0.01);
+		filter.setMaximalTimeStep(0.5);
 		
 		RobotSimulator simulator = new RobotSimulator();
 		simulator.setRotationNoise(10);
 		simulator.setSpeed(1);
 		simulator.setAccelerationNoise(0.1);
-		simulator.setTimeStep(0.0001);
+		simulator.setTimeStep(0.001);
 		
 		
 		XyPlotter plotXy = new XyPlotter("Robot xy");
@@ -39,6 +39,10 @@ public class Simulation {
 		final XTimePlotter plotAngle = new XTimePlotter("Robot angles");
 		RefineryUtilities.centerFrameOnScreen(plotAngle);
 		plotAngle.setVisible(true);
+		
+		final XTimePlotter plotWidth = new XTimePlotter("Robot width");
+		RefineryUtilities.centerFrameOnScreen(plotWidth);
+		plotWidth.setVisible(true);
 		
 		int i=0;
 		for(double d = 0; d<100; d+=0.1) {
@@ -65,6 +69,8 @@ public class Simulation {
 				plotDist.addValues("filter right", d, process.getDistanceRight());
 				plotSpeed.addValues("filter speed", d, process.getSpeed());
 				plotAngle.addValues("filter angle", d, process.getAngle());
+				
+				plotWidth.addValues("filter width", d, process.getWidth());
 			}
 			
 			i++;

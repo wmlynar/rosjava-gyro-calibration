@@ -38,7 +38,7 @@ public class RobotOdomObservation extends ObservationModel {
 	@Override
 	public void observationNoiseCovariance(double[][] cov) {
 		cov[0][0] = 1e-2;
-		cov[1][1] = 1e-3;
+		cov[1][1] = 1e-2;
 	}
 
 }

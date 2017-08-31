@@ -14,10 +14,12 @@ public class RobotModel extends ProcessModel {
 	public static int R = 7;
 	public static int X1 = 8;
 	public static int Y1 = 9;
+	public static int BIAS = 10;
+	public static int INVGAIN = 11;
 
 	@Override
 	public int stateDimension() {
-		return 10;
+		return 12;
 	}
 
 	@Override
@@ -32,6 +34,8 @@ public class RobotModel extends ProcessModel {
 		x[R][0] = 0;
 		x[X1][0] = -100;
 		x[Y1][0] = 0;
+		x[BIAS][0] = 1;
+		x[INVGAIN][0] = 1;
 	}
 
 	@Override
@@ -46,6 +50,8 @@ public class RobotModel extends ProcessModel {
 		cov[R][R] = 0.001;
 		cov[X1][X1] = 1000;
 		cov[Y1][Y1] = 1000;
+		cov[BIAS][0] = 0.001;
+		cov[INVGAIN][0] = 0.001;
 	}
 
 	@Override
@@ -60,6 +66,8 @@ public class RobotModel extends ProcessModel {
 		f[R][0] = x[S][0] - x[B][0]*x[ROT][0];
 		f[X1][0] = 0;
 		f[Y1][0] = 0;
+		x[BIAS][0] = 0;
+		x[INVGAIN][0] = 0;
 	}
 
 	@Override
@@ -91,6 +99,8 @@ public class RobotModel extends ProcessModel {
 		cov[R][R] = 1e-6;
 		cov[X1][X1] = 1e-6;
 		cov[Y1][Y1] = 1e-6;
+		cov[BIAS][0] = 1e-6;
+		cov[INVGAIN][0] = 1e-6;
 	}
 	
 	public double getX() {

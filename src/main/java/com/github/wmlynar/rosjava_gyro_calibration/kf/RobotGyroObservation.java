@@ -2,9 +2,9 @@ package com.github.wmlynar.rosjava_gyro_calibration.kf;
 
 import com.github.wmlynar.ekf.ObservationModel;
 
-public class RobotAngleObservation extends ObservationModel {
+public class RobotGyroObservation extends ObservationModel {
 	
-	public double angle = 0;
+	public double gyroMeasurement = 0;
 
 	@Override
 	public int observationDimension() {
@@ -18,22 +18,24 @@ public class RobotAngleObservation extends ObservationModel {
 
 	@Override
 	public void observationMeasurement(double[][] y) {
-		y[0][0] = angle;
+		y[0][0] = gyroMeasurement;
 	}
 
 	@Override
 	public void observationModel(double[][] x, double[][] h) {
-		h[0][0] = x[RobotModel.A][0];
+		h[0][0] = (x[RobotModel.ROT][0] + x[RobotModel.BIAS][0]) * x[RobotModel.INVGAIN][0];
 	}
 
 	@Override
 	public void observationModelJacobian(double[][] x, double[][] j) {
-		j[0][RobotModel.A] = 1;
+		j[0][RobotModel.ROT] = x[RobotModel.INVGAIN][0];
+		j[0][RobotModel.BIAS] = x[RobotModel.INVGAIN][0];
+		j[0][RobotModel.INVGAIN] = x[RobotModel.ROT][0] + j[0][RobotModel.BIAS];
 	}
 
 	@Override
 	public void observationNoiseCovariance(double[][] cov) {
-		cov[0][0] = 2;
+		cov[0][0] = 1e-2;
 	}
 
 }

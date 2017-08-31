@@ -10,6 +10,7 @@ public class RobotSimulator {
 	double y = 0;
 	double speed = 0;
 	double angle = 0;
+	double rotation = 0;
 	double rotationNoise = 0;
 	double accelerationNoise = 0;
 	double distanceLeft = 0;
@@ -18,6 +19,11 @@ public class RobotSimulator {
 
 	double beaconX = -100;
 	double beaconY = 0;
+
+	double bias = 1;
+	double biasDrift = 0;
+	double invgain = 1;
+	double gainDrift = 0;
 	
 	Random random = new Random(0);
 
@@ -50,13 +56,16 @@ public class RobotSimulator {
 
 	public void simulateInterval(double dt) {
 		double acceleration = accelerationNoise *  (random.nextDouble() - 0.5);
-		double rotation = rotationNoise *  (random.nextDouble() - 0.5); 
+		double drotation = rotationNoise *  (random.nextDouble() - 0.5); 
 		speed += acceleration * dt;
 		angle += rotation * dt;
+		rotation += drotation * dt;
 		x += speed * Math.sin(angle) * dt;
 		y += speed * Math.cos(angle) * dt;
 		distanceLeft += speed*dt + width*rotation*dt; 
 		distanceRight += speed*dt - width*rotation*dt; 
+		bias += biasDrift * (random.nextDouble() - 0.5) * dt;
+		invgain += gainDrift * (random.nextDouble() - 0.5) * dt;
 	}
 
 	public double getX() {
@@ -96,5 +105,19 @@ public class RobotSimulator {
 
 		return  Math.sqrt(dx*dx + dy*dy);
 	}
+
+	public void setBiasDrift(double biasDrift) {
+		this.biasDrift = biasDrift;
+	}
+
+	public void setGainDrift(double gainDrift) {
+		this.gainDrift = gainDrift;
+	}
+
+	public double getGyroMeasurement() {
+		return (rotation + bias) * invgain;
+	}
+
+	
 
 }

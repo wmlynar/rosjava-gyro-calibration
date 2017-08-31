@@ -14,7 +14,7 @@ public class BeaconObservation extends ObservationModel {
 
 	@Override
 	public int stateDimension() {
-		return 10;
+		return 12;
 	}
 
 	@Override

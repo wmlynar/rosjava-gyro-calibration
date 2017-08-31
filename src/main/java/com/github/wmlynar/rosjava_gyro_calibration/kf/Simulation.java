@@ -12,6 +12,7 @@ public class Simulation {
 
 		RobotAngleObservation angleObs = new RobotAngleObservation();
 		RobotOdomObservation odomObs = new RobotOdomObservation();
+		BeaconObservation beaconObs = new BeaconObservation();
 		RobotProcess process = new RobotProcess();
 		KalmanFilter filter = new KalmanFilter(process);
 		filter.setMaximalTimeStep(0.01);
@@ -48,12 +49,16 @@ public class Simulation {
 				plotDist.addValues("sim right", d, simulator.getDistanceRight());
 				plotSpeed.addValues("sim speed", d, simulator.getSpeed());
 				plotAngle.addValues("sim angle", d, simulator.getAngle());
+//				plotAngle.addValues("sim beacon angle", d, simulator.getBeaconAngle());
 				
 //				angleObs.angle = 0;
 //				filter.update(d, angleObs);
 				odomObs.left = simulator.getDistanceLeft();
 				odomObs.right = simulator.getDistanceRight();
 				filter.update(d, odomObs);
+				beaconObs.beaconAngle = simulator.getBeaconAngle();
+				beaconObs.beaconDistance = simulator.getBeaconDistance();
+				filter.update(d, beaconObs);
 
 				plotXy.addValues("filter position", process.getX(), process.getY());
 				plotDist.addValues("filter left", d, process.getDistanceLeft());

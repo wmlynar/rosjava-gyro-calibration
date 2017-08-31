@@ -30,15 +30,15 @@ public class RobotOdomObservation extends ObservationModel {
 	}
 
 	@Override
-	public void observationModelJacobian(double[][] j) {
+	public void observationModelJacobian(double[][] x, double[][] j) {
 		j[0][RobotProcess.L] = 1;
 		j[1][RobotProcess.R] = 1;
 	}
 
 	@Override
 	public void observationNoiseCovariance(double[][] cov) {
-		cov[0][0] = 1e-4;
-		cov[1][1] = 1e-4;
+		cov[0][0] = 1e-2;
+		cov[1][1] = 1e-3;
 	}
 
 }

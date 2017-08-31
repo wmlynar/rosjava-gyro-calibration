@@ -15,6 +15,9 @@ public class RobotSimulator {
 	double distanceLeft = 0;
 	double distanceRight = 0;
 	double width = 10;
+
+	double beaconX = -100;
+	double beaconY = 0;
 	
 	Random random = new Random(0);
 
@@ -78,6 +81,20 @@ public class RobotSimulator {
 
 	public double getAngle() {
 		return angle;
+	}
+
+	public double getBeaconAngle() {
+		double dx = beaconX - x;
+		double dy = beaconY - y;
+
+		return  Math.atan2(dx, dy) + angle;
+	}
+
+	public double getBeaconDistance() {
+		double dx = beaconX - x;
+		double dy = beaconY - y;
+
+		return  Math.sqrt(dx*dx + dy*dy);
 	}
 
 }

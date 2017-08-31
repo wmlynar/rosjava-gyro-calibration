@@ -30,7 +30,7 @@ public class RobotProcess extends ProcessModel {
 		x[B][0] = 10;
 		x[L][0] = 0;
 		x[R][0] = 0;
-		x[X1][0] = 0;
+		x[X1][0] = -100;
 		x[Y1][0] = 0;
 	}
 

@@ -35,13 +35,13 @@ import sensor_msgs.LaserScan;
 /**
  * A simple {@link Subscriber} {@link NodeMain}.
  */
-public class RosMessagesLoggerNode extends AbstractNodeMain {
+public class RosMessagesSubscriberNode extends AbstractNodeMain {
 
     private Subscriber<Odometry> odomSubscriber;
     private Subscriber<LaserScan> scanSubscriber;
     private Subscriber<Vector3Stamped> distSubscriber;
 
-    private RosMessageLogger rosMessageLogger = new RosMessageLogger();
+    private RosMessageTranslator rosMessageTranslator = new RosMessageTranslator(new RosMessageLogger());
 
     @Override
     public GraphName getDefaultNodeName() {
@@ -56,7 +56,7 @@ public class RosMessagesLoggerNode extends AbstractNodeMain {
             @Override
             public void onNewMessage(Odometry odom) {
                 try {
-                    rosMessageLogger.logOdom(odom);
+                    rosMessageTranslator.logOdom(odom);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -69,7 +69,7 @@ public class RosMessagesLoggerNode extends AbstractNodeMain {
             @Override
             public void onNewMessage(LaserScan scan) {
                 try {
-                    rosMessageLogger.logScan(scan);
+                    rosMessageTranslator.logScan(scan);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -81,7 +81,7 @@ public class RosMessagesLoggerNode extends AbstractNodeMain {
             @Override
             public void onNewMessage(Vector3Stamped dist) {
                 try {
-                    rosMessageLogger.logDist(dist);
+                    rosMessageTranslator.logDist(dist);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -97,7 +97,7 @@ public class RosMessagesLoggerNode extends AbstractNodeMain {
         NodeConfiguration nodeConfiguration = NodeConfiguration.newPublic(host, masteruri);
         NodeMainExecutor nodeMainExecutor = DefaultNodeMainExecutor.newDefault();
 
-        RosMessagesLoggerNode subscriber = new RosMessagesLoggerNode();
+        RosMessagesSubscriberNode subscriber = new RosMessagesSubscriberNode();
         nodeMainExecutor.execute(subscriber, nodeConfiguration);
 
     }

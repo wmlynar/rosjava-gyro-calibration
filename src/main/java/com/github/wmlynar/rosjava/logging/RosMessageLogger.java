@@ -22,7 +22,7 @@ public class RosMessageLogger {
         CsvLogWriter.log("odom", n, valueX, valueY, yaw, linear, angular);
     }
 
-    public void logDistances(Vector3Stamped dist) {
+    public void logDist(Vector3Stamped dist) {
         long n = dist.getHeader().getStamp().totalNsecs();
         double valueX = dist.getVector().getX();
         double valueY = dist.getVector().getY();

@@ -28,6 +28,7 @@ import org.ros.node.NodeMain;
 import org.ros.node.NodeMainExecutor;
 import org.ros.node.topic.Subscriber;
 
+import geometry_msgs.Vector3Stamped;
 import nav_msgs.Odometry;
 import sensor_msgs.LaserScan;
 
@@ -36,8 +37,9 @@ import sensor_msgs.LaserScan;
  */
 public class RosMessagesLoggerNode extends AbstractNodeMain {
 
-    private Subscriber<nav_msgs.Odometry> odomSubscriber;
-    private Subscriber<sensor_msgs.LaserScan> scanSubscriber;
+    private Subscriber<Odometry> odomSubscriber;
+    private Subscriber<LaserScan> scanSubscriber;
+    private Subscriber<Vector3Stamped> distSubscriber;
 
     private RosMessageLogger rosMessageLogger = new RosMessageLogger();
 
@@ -49,7 +51,7 @@ public class RosMessagesLoggerNode extends AbstractNodeMain {
     @Override
     public void onStart(ConnectedNode connectedNode) {
 
-        odomSubscriber = connectedNode.newSubscriber("odom", nav_msgs.Odometry._TYPE);
+        odomSubscriber = connectedNode.newSubscriber("odom", Odometry._TYPE);
         odomSubscriber.addMessageListener(new MessageListener<Odometry>() {
             @Override
             public void onNewMessage(Odometry odom) {
@@ -62,12 +64,24 @@ public class RosMessagesLoggerNode extends AbstractNodeMain {
 
         });
 
-        scanSubscriber = connectedNode.newSubscriber("base_scan", sensor_msgs.LaserScan._TYPE);
+        scanSubscriber = connectedNode.newSubscriber("base_scan", LaserScan._TYPE);
         scanSubscriber.addMessageListener(new MessageListener<LaserScan>() {
             @Override
             public void onNewMessage(LaserScan scan) {
                 try {
                     rosMessageLogger.logScan(scan);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        distSubscriber = connectedNode.newSubscriber("dist", Vector3Stamped._TYPE);
+        distSubscriber.addMessageListener(new MessageListener<Vector3Stamped>() {
+            @Override
+            public void onNewMessage(Vector3Stamped dist) {
+                try {
+                    rosMessageLogger.logDist(dist);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

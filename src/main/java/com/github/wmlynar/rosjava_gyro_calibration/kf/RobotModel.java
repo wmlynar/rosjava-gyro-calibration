@@ -24,7 +24,7 @@ public class RobotModel extends ProcessModel {
 	public void initialState(double[][] x) {
 		x[X][0] = 0;
 		x[Y][0] = 0;
-		x[S][0] = 0;
+		x[S][0] = 1;
 		x[A][0] = 0;
 		x[ROT][0] = 0;
 		x[B][0] = 12; // initial value with error

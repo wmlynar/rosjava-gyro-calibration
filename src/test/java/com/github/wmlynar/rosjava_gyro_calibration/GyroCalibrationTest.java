@@ -1,7 +1,5 @@
 package com.github.wmlynar.rosjava_gyro_calibration;
 
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,24 +17,23 @@ public class GyroCalibrationTest {
 		model.setGainDriftPerSecond(0.01);
 	}
 
-	
 	@Test
 	public void test() {
-		//given
+		// given
 		calibration = new GyroCalibration();
-		
-		calibration.setInitialPosition(0,0);
+
+		calibration.setInitialPosition(0, 0);
 		calibration.setInitialRotation(0);
 		calibration.setInitialBias(1.5);
 		calibration.setInitialGain(1.5);
-		
-		//when
+
+		// when
 		model.moveTime(1);
 		calibration.moveTime(1);
-		calibration.setPosition(0,1);
+		calibration.setPosition(0, 1);
 		calibration.setMeasurement(model.getMeasurement());
 
-		//then
+		// then
 	}
 
 }

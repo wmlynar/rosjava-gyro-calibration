@@ -31,19 +31,20 @@ public class PubSubExampleWithCore {
 
 		NodeConfiguration nodeConfiguration = null;
 		if (args.length == 0) {
-			args = EMPTY;
+			args = PubSubExampleWithCore.EMPTY;
 		}
 		CommandLineLoader loader = new CommandLineLoader(Lists.newArrayList(args));
 		nodeConfiguration = loader.build();
 
 		// Check if Talker class correctly instantiated
-		Preconditions.checkState(pubNodeMain != null);
-		// execute the nodelet talker (this will run the method onStart of Talker.java)
-		nodeMainExecutor.execute(pubNodeMain, nodeConfiguration);
+		Preconditions.checkState(PubSubExampleWithCore.pubNodeMain != null);
+		// execute the nodelet talker (this will run the method onStart of
+		// Talker.java)
+		nodeMainExecutor.execute(PubSubExampleWithCore.pubNodeMain, nodeConfiguration);
 
 		// Load the subscriber(listener) same as for publisher
-		Preconditions.checkState(subNodeMain != null);
-		nodeMainExecutor.execute(subNodeMain, nodeConfiguration);
+		Preconditions.checkState(PubSubExampleWithCore.subNodeMain != null);
+		nodeMainExecutor.execute(PubSubExampleWithCore.subNodeMain, nodeConfiguration);
 
 	}
 

@@ -3,7 +3,7 @@ package com.github.wmlynar.rosjava_gyro_calibration.kf;
 import com.github.wmlynar.ekf.ObservationModel;
 
 public class RobotAngleObservation extends ObservationModel {
-	
+
 	public double angle = 0;
 
 	@Override

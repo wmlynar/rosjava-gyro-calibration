@@ -3,7 +3,7 @@ package com.github.wmlynar.rosjava_gyro_calibration.kf;
 import com.github.wmlynar.ekf.ObservationModel;
 
 public class RobotOdomObservation extends ObservationModel {
-	
+
 	public double left = 0;
 	public double right = 0;
 

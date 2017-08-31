@@ -3,7 +3,7 @@ package com.github.wmlynar.rosjava_gyro_calibration.kf;
 import java.util.Random;
 
 public class RobotSimulator {
-	
+
 	double time = 0;
 	double maximalTimeStep = 1;
 	double x = 0;
@@ -24,7 +24,9 @@ public class RobotSimulator {
 	double biasDrift = 0;
 	double invgain = 1;
 	double gainDrift = 0;
-	
+
+	MovingAverageFilter gyroFilter = new MovingAverageFilter(10);
+
 	Random random = new Random(0);
 
 	public void setRotationNoise(double n) {
@@ -55,17 +57,19 @@ public class RobotSimulator {
 	}
 
 	public void simulateInterval(double dt) {
-		double acceleration = accelerationNoise *  (random.nextDouble() - 0.5);
-		double drotation = rotationNoise *  (random.nextDouble() - 0.5); 
+		double acceleration = accelerationNoise * (random.nextDouble() - 0.5);
+		double drotation = rotationNoise * (random.nextDouble() - 0.5);
 		speed += acceleration * dt;
 		angle += rotation * dt;
 		rotation += drotation * dt;
 		x += speed * Math.sin(angle) * dt;
 		y += speed * Math.cos(angle) * dt;
-		distanceLeft += speed*dt + width*rotation*dt; 
-		distanceRight += speed*dt - width*rotation*dt; 
+		distanceLeft += speed * dt + width * rotation * dt;
+		distanceRight += speed * dt - width * rotation * dt;
 		bias += biasDrift * (random.nextDouble() - 0.5) * dt;
 		invgain += gainDrift * (random.nextDouble() - 0.5) * dt;
+
+		gyroFilter.add(rotation);
 	}
 
 	public double getX() {
@@ -96,14 +100,14 @@ public class RobotSimulator {
 		double dx = beaconX - x;
 		double dy = beaconY - y;
 
-		return  Math.atan2(dx, dy) + angle;
+		return Math.atan2(dx, dy) + angle;
 	}
 
 	public double getBeaconDistance() {
 		double dx = beaconX - x;
 		double dy = beaconY - y;
 
-		return  Math.sqrt(dx*dx + dy*dy);
+		return Math.sqrt(dx * dx + dy * dy);
 	}
 
 	public void setBiasDrift(double biasDrift) {
@@ -115,7 +119,7 @@ public class RobotSimulator {
 	}
 
 	public double getGyroMeasurement() {
-		return (rotation + bias) * invgain;
+		return (gyroFilter.getAverage() + bias) * invgain;
 	}
 
 	public double getBias() {
@@ -126,8 +130,12 @@ public class RobotSimulator {
 		return invgain;
 	}
 
+	public boolean hasRotation() {
+		return gyroFilter.hasAverage();
+	}
+
 	public double getRotation() {
-		return rotation;
+		return gyroFilter.getAverage();
 	}
 
 }

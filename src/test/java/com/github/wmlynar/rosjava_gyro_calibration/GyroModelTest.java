@@ -1,11 +1,10 @@
 package com.github.wmlynar.rosjava_gyro_calibration;
 
-import static org.junit.Assert.assertEquals;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 public class GyroModelTest {
-	
+
 	@Test
 	public void testDrift() {
 		// given
@@ -15,12 +14,12 @@ public class GyroModelTest {
 		model.setBiasDriftPerSecond(0.01);
 		model.setGainDriftPerSecond(0.01);
 
-		//when
+		// when
 		model.moveTime(1);
-		
-		//then
-		assertEquals(1.51, model.getCurrentBias(), 1e-10);
-		assertEquals(1.01, model.getCurrentGain(), 1e-10);
+
+		// then
+		Assert.assertEquals(1.51, model.getCurrentBias(), 1e-10);
+		Assert.assertEquals(1.01, model.getCurrentGain(), 1e-10);
 	}
 
 	@Test
@@ -32,11 +31,11 @@ public class GyroModelTest {
 		model.setBiasDriftPerSecond(0.01);
 		model.setGainDriftPerSecond(0.01);
 
-		//when
+		// when
 		model.setAngularVelocityRadiansPerSecondRight(1);
-		
-		//then
-		assertEquals(2.5, model.getMeasurement(), 1e-10);
+
+		// then
+		Assert.assertEquals(2.5, model.getMeasurement(), 1e-10);
 	}
 
 }

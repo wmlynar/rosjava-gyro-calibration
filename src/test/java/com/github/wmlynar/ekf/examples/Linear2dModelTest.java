@@ -29,9 +29,9 @@ public class Linear2dModelTest {
 			double time = i;
 			obs.setPosition(i, i);
 			filter.update(time, obs);
-			
-			plotter.addValues("x",time,model.getState()[0][0]);
-			plotter.addValues("v",time,model.getState()[1][0]);
+
+			plotter.addValues("x", time, model.getState()[0][0]);
+			plotter.addValues("v", time, model.getState()[1][0]);
 		}
 
 		double x = filter.model.state_estimate.data[0][0];

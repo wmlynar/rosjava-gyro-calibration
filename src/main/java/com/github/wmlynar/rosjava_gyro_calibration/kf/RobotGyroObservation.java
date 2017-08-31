@@ -3,7 +3,7 @@ package com.github.wmlynar.rosjava_gyro_calibration.kf;
 import com.github.wmlynar.ekf.ObservationModel;
 
 public class RobotGyroObservation extends ObservationModel {
-	
+
 	public double gyroMeasurement = 0;
 
 	@Override
@@ -35,7 +35,7 @@ public class RobotGyroObservation extends ObservationModel {
 
 	@Override
 	public void observationNoiseCovariance(double[][] cov) {
-		cov[0][0] = 1e-6;
+		cov[0][0] = 1e-4;
 	}
 
 }

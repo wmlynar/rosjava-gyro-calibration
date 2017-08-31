@@ -3,13 +3,13 @@ package com.github.wmlynar.rosjava_gyro_calibration.kf;
 import com.github.wmlynar.ekf.ProcessModel;
 
 public class RobotModel extends ProcessModel {
-	
+
 	public static int X = 0;
 	public static int Y = 1;
 	public static int S = 2;
 	public static int A = 3;
 	public static int ROT = 4;
-	public static int B = 5;
+	public static int WIDTH = 5;
 	public static int L = 6;
 	public static int R = 7;
 	public static int X1 = 8;
@@ -24,121 +24,125 @@ public class RobotModel extends ProcessModel {
 
 	@Override
 	public void initialState(double[][] x) {
-		x[X][0] = 0;
-		x[Y][0] = 0;
-		x[S][0] = 1;
-		x[A][0] = 0;
-		x[ROT][0] = 0;
-		x[B][0] = 12; // initial value with error
-		x[L][0] = 0;
-		x[R][0] = 0;
-		x[X1][0] = -100;
-		x[Y1][0] = 0;
-		x[BIAS][0] = 1.00;
-		x[INVGAIN][0] = 1;
+		x[RobotModel.X][0] = 0;
+		x[RobotModel.Y][0] = 0;
+		x[RobotModel.S][0] = 1;
+		x[RobotModel.A][0] = 0;
+		x[RobotModel.ROT][0] = 0;
+		x[RobotModel.WIDTH][0] = 10; // initial value with error
+		x[RobotModel.L][0] = 0;
+		x[RobotModel.R][0] = 0;
+		x[RobotModel.X1][0] = -100;
+		x[RobotModel.Y1][0] = 0;
+		x[RobotModel.BIAS][0] = 1;
+		x[RobotModel.INVGAIN][0] = 1;
 	}
 
 	@Override
 	public void initialStateCovariance(double[][] cov) {
-		cov[X][X] = 0.001;
-		cov[Y][Y] = 0.001;
-		cov[S][S] = 1;
-		cov[A][A] = 1;
-		cov[ROT][ROT] = 1;
-		cov[B][B] = 10;
-		cov[L][L] = 0.001;
-		cov[R][R] = 0.001;
-		cov[X1][X1] = 1000;
-		cov[Y1][Y1] = 1000;
-		cov[BIAS][0] = 10;
-		cov[INVGAIN][0] = 0.01;
+		cov[RobotModel.X][RobotModel.X] = 0.001;
+		cov[RobotModel.Y][RobotModel.Y] = 0.001;
+		cov[RobotModel.S][RobotModel.S] = 1;
+		cov[RobotModel.A][RobotModel.A] = 1;
+		cov[RobotModel.ROT][RobotModel.ROT] = 1;
+		cov[RobotModel.WIDTH][RobotModel.WIDTH] = 10;
+		cov[RobotModel.L][RobotModel.L] = 0.001;
+		cov[RobotModel.R][RobotModel.R] = 0.001;
+		cov[RobotModel.X1][RobotModel.X1] = 1000;
+		cov[RobotModel.Y1][RobotModel.Y1] = 1000;
+		cov[RobotModel.BIAS][RobotModel.BIAS] = 1e-4;
+		cov[RobotModel.INVGAIN][RobotModel.INVGAIN] = 1e-9;
 	}
 
 	@Override
 	public void stateFunction(double[][] x, double[][] f) {
-		f[X][0] = x[S][0] * Math.sin(x[A][0]);
-		f[Y][0] = x[S][0] * Math.cos(x[A][0]);
-		f[S][0] = 0;
-		f[A][0] = x[ROT][0];
-		f[ROT][0] = 0;
-		f[B][0] = 0;
-		f[L][0] = x[S][0] + x[B][0]*x[ROT][0];
-		f[R][0] = x[S][0] - x[B][0]*x[ROT][0];
-		f[X1][0] = 0;
-		f[Y1][0] = 0;
-		f[BIAS][0] = 0;
-		f[INVGAIN][0] = 0;
+		f[RobotModel.X][0] = x[RobotModel.S][0] * Math.sin(x[RobotModel.A][0]);
+		f[RobotModel.Y][0] = x[RobotModel.S][0] * Math.cos(x[RobotModel.A][0]);
+		f[RobotModel.S][0] = 0;
+		f[RobotModel.A][0] = x[RobotModel.ROT][0];
+		f[RobotModel.ROT][0] = 0;
+		f[RobotModel.WIDTH][0] = 0;
+		f[RobotModel.L][0] = x[RobotModel.S][0] + x[RobotModel.WIDTH][0] * x[RobotModel.ROT][0];
+		f[RobotModel.R][0] = x[RobotModel.S][0] - x[RobotModel.WIDTH][0] * x[RobotModel.ROT][0];
+		f[RobotModel.X1][0] = 0;
+		f[RobotModel.Y1][0] = 0;
+		f[RobotModel.BIAS][0] = 0;
+		f[RobotModel.INVGAIN][0] = 0;
 	}
 
 	@Override
 	public void stateFunctionJacobian(double[][] x, double[][] j) {
-		j[X][S] = Math.sin(x[A][0]);
-		j[X][A] = x[S][0] * Math.cos(x[A][0]);
-		j[Y][S] = Math.cos(x[A][0]);
-		j[Y][A] = -x[S][0] * Math.sin(x[A][0]);
-		j[A][ROT] = 1;
-		j[L][S] = 1;
-		j[L][B] = x[ROT][0];
-		j[L][ROT] = x[B][0];
-		j[R][S] = 1;
-		j[R][B] = -x[ROT][0];
-		j[R][ROT] = -x[B][0];
+		j[RobotModel.X][RobotModel.S] = Math.sin(x[RobotModel.A][0]);
+		j[RobotModel.X][RobotModel.A] = x[RobotModel.S][0] * Math.cos(x[RobotModel.A][0]);
+		j[RobotModel.Y][RobotModel.S] = Math.cos(x[RobotModel.A][0]);
+		j[RobotModel.Y][RobotModel.A] = -x[RobotModel.S][0] * Math.sin(x[RobotModel.A][0]);
+		j[RobotModel.A][RobotModel.ROT] = 1;
+		j[RobotModel.L][RobotModel.S] = 1;
+		j[RobotModel.L][RobotModel.WIDTH] = x[RobotModel.ROT][0];
+		j[RobotModel.L][RobotModel.ROT] = x[RobotModel.WIDTH][0];
+		j[RobotModel.R][RobotModel.S] = 1;
+		j[RobotModel.R][RobotModel.WIDTH] = -x[RobotModel.ROT][0];
+		j[RobotModel.R][RobotModel.ROT] = -x[RobotModel.WIDTH][0];
 	}
 
 	@Override
 	public void processNoiseCovariance(double[][] cov) {
-		cov[X][X] = 1e-6;
-		cov[Y][Y] = 1e-6;
-		cov[S][S] = 1e-1;
-		cov[A][A] = 1e-6;
-		cov[ROT][ROT] = 1e-1;
-		cov[B][B] = 1e-4;
-		cov[L][L] = 1e-6;
-		cov[R][R] = 1e-6;
-		cov[X1][X1] = 1e-6;
-		cov[Y1][Y1] = 1e-6;
-		cov[BIAS][0] = 1e-4;
-		cov[INVGAIN][0] = 1e-6;
+		cov[RobotModel.X][RobotModel.X] = 1e-6;
+		cov[RobotModel.Y][RobotModel.Y] = 1e-6;
+		cov[RobotModel.S][RobotModel.S] = 1e-1;
+		cov[RobotModel.A][RobotModel.A] = 1e-6;
+		cov[RobotModel.ROT][RobotModel.ROT] = 1e-1;
+		cov[RobotModel.WIDTH][RobotModel.WIDTH] = 1e-7;
+		cov[RobotModel.L][RobotModel.L] = 1e-6;
+		cov[RobotModel.R][RobotModel.R] = 1e-6;
+		cov[RobotModel.X1][RobotModel.X1] = 1e-6;
+		cov[RobotModel.Y1][RobotModel.Y1] = 1e-6;
+		cov[RobotModel.BIAS][RobotModel.BIAS] = 1e-4;
+		cov[RobotModel.INVGAIN][RobotModel.BIAS] = 1e-9;
 	}
-	
+
 	public double getX() {
-		return getState()[X][0];
+		return getState()[RobotModel.X][0];
 	}
 
 	public double getY() {
-		return getState()[Y][0];
+		return getState()[RobotModel.Y][0];
 	}
 
 	public double getDistanceLeft() {
-		return getState()[L][0];
+		return getState()[RobotModel.L][0];
 	}
 
 	public double getDistanceRight() {
-		return getState()[R][0];
+		return getState()[RobotModel.R][0];
 	}
 
 	public double getSpeed() {
-		return getState()[S][0];
+		return getState()[RobotModel.S][0];
 	}
 
 	public double getAngle() {
-		return getState()[A][0];
+		return getState()[RobotModel.A][0];
 	}
 
 	public double getWidth() {
-		return getState()[B][0];
+		return getState()[RobotModel.WIDTH][0];
 	}
 
 	public double getBias() {
-		return getState()[BIAS][0];
+		return getState()[RobotModel.BIAS][0];
 	}
 
 	public double getGain() {
-		return getState()[INVGAIN][0];
+		return getState()[RobotModel.INVGAIN][0];
 	}
 
 	public double getRotation() {
-		return getState()[RobotModel.ROT][0]; //;(getState()[RobotModel.ROT][0] + getState()[RobotModel.BIAS][0]) * getState()[RobotModel.INVGAIN][0];
+		return getState()[RobotModel.ROT][0]; // ;(getState()[RobotModel.ROT][0]
+												// +
+												// getState()[RobotModel.BIAS][0])
+												// *
+												// getState()[RobotModel.INVGAIN][0];
 	}
 
 }

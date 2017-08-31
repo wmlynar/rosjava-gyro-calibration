@@ -8,28 +8,28 @@ import com.opencsv.CSVReader;
 
 public class CsvLogReader {
 
-	CSVReader reader = null;
-	private String[] line;
+    CSVReader reader = null;
+    private String[] line;
 
-	public CsvLogReader(String name) {
-		try {
-			reader = new CSVReader(new FileReader(name), ',');
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    public CsvLogReader(String name) {
+        try {
+            reader = new CSVReader(new FileReader(name), ',');
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	public boolean hasNext() {
-		try {
-			this.line = reader.readNext();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		return this.line != null;
-	}
+    public boolean hasNext() {
+        try {
+            this.line = reader.readNext();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return this.line != null;
+    }
 
-	public String[] readLine() {
-		return this.line;
-	}
+    public String[] readLine() {
+        return this.line;
+    }
 
 }

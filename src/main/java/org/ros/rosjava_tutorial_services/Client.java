@@ -34,40 +34,40 @@ import org.ros.node.service.ServiceResponseListener;
  */
 public class Client extends AbstractNodeMain {
 
-	@Override
-	public GraphName getDefaultNodeName() {
-		return GraphName.of("rosjava_tutorial_services/client");
-	}
+    @Override
+    public GraphName getDefaultNodeName() {
+        return GraphName.of("rosjava_tutorial_services/client");
+    }
 
-	@Override
-	public void onStart(final ConnectedNode connectedNode) {
-		final Log log = connectedNode.getLog();
-		ServiceClient<rosjava_test_msgs.AddTwoIntsRequest, rosjava_test_msgs.AddTwoIntsResponse> serviceClient = null;
-		while (serviceClient == null) {
-			try {
-				serviceClient = connectedNode.newServiceClient("add_two_ints", rosjava_test_msgs.AddTwoInts._TYPE);
-			} catch (ServiceNotFoundException e) {
-				log.info("service not found");
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e1) {
-				}
-			}
-		}
-		final rosjava_test_msgs.AddTwoIntsRequest request = serviceClient.newMessage();
-		request.setA(2);
-		request.setB(2);
-		serviceClient.call(request, new ServiceResponseListener<rosjava_test_msgs.AddTwoIntsResponse>() {
-			@Override
-			public void onSuccess(rosjava_test_msgs.AddTwoIntsResponse response) {
-				connectedNode.getLog()
-						.info(String.format("%d + %d = %d", request.getA(), request.getB(), response.getSum()));
-			}
+    @Override
+    public void onStart(final ConnectedNode connectedNode) {
+        final Log log = connectedNode.getLog();
+        ServiceClient<rosjava_test_msgs.AddTwoIntsRequest, rosjava_test_msgs.AddTwoIntsResponse> serviceClient = null;
+        while (serviceClient == null) {
+            try {
+                serviceClient = connectedNode.newServiceClient("add_two_ints", rosjava_test_msgs.AddTwoInts._TYPE);
+            } catch (ServiceNotFoundException e) {
+                log.info("service not found");
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e1) {
+                }
+            }
+        }
+        final rosjava_test_msgs.AddTwoIntsRequest request = serviceClient.newMessage();
+        request.setA(2);
+        request.setB(2);
+        serviceClient.call(request, new ServiceResponseListener<rosjava_test_msgs.AddTwoIntsResponse>() {
+            @Override
+            public void onSuccess(rosjava_test_msgs.AddTwoIntsResponse response) {
+                connectedNode.getLog()
+                        .info(String.format("%d + %d = %d", request.getA(), request.getB(), response.getSum()));
+            }
 
-			@Override
-			public void onFailure(RemoteException e) {
-				throw new RosRuntimeException(e);
-			}
-		});
-	}
+            @Override
+            public void onFailure(RemoteException e) {
+                throw new RosRuntimeException(e);
+            }
+        });
+    }
 }

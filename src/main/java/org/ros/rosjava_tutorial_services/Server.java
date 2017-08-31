@@ -30,20 +30,20 @@ import org.ros.node.service.ServiceServer;
  */
 public class Server extends AbstractNodeMain {
 
-	@Override
-	public GraphName getDefaultNodeName() {
-		return GraphName.of("rosjava_tutorial_services/server");
-	}
+    @Override
+    public GraphName getDefaultNodeName() {
+        return GraphName.of("rosjava_tutorial_services/server");
+    }
 
-	@Override
-	public void onStart(ConnectedNode connectedNode) {
-		connectedNode.newServiceServer("add_two_ints", rosjava_test_msgs.AddTwoInts._TYPE,
-				new ServiceResponseBuilder<rosjava_test_msgs.AddTwoIntsRequest, rosjava_test_msgs.AddTwoIntsResponse>() {
-					@Override
-					public void build(rosjava_test_msgs.AddTwoIntsRequest request,
-							rosjava_test_msgs.AddTwoIntsResponse response) {
-						response.setSum(request.getA() + request.getB());
-					}
-				});
-	}
+    @Override
+    public void onStart(ConnectedNode connectedNode) {
+        connectedNode.newServiceServer("add_two_ints", rosjava_test_msgs.AddTwoInts._TYPE,
+                new ServiceResponseBuilder<rosjava_test_msgs.AddTwoIntsRequest, rosjava_test_msgs.AddTwoIntsResponse>() {
+                    @Override
+                    public void build(rosjava_test_msgs.AddTwoIntsRequest request,
+                            rosjava_test_msgs.AddTwoIntsResponse response) {
+                        response.setSum(request.getA() + request.getB());
+                    }
+                });
+    }
 }

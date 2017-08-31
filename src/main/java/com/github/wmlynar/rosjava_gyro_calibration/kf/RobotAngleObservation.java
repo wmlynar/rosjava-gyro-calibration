@@ -4,36 +4,36 @@ import com.github.wmlynar.ekf.ObservationModel;
 
 public class RobotAngleObservation extends ObservationModel {
 
-	public double angle = 0;
+    public double angle = 0;
 
-	@Override
-	public int observationDimension() {
-		return 1;
-	}
+    @Override
+    public int observationDimension() {
+        return 1;
+    }
 
-	@Override
-	public int stateDimension() {
-		return 12;
-	}
+    @Override
+    public int stateDimension() {
+        return 12;
+    }
 
-	@Override
-	public void observationMeasurement(double[][] y) {
-		y[0][0] = angle;
-	}
+    @Override
+    public void observationMeasurement(double[][] y) {
+        y[0][0] = angle;
+    }
 
-	@Override
-	public void observationModel(double[][] x, double[][] h) {
-		h[0][0] = x[RobotModel.A][0];
-	}
+    @Override
+    public void observationModel(double[][] x, double[][] h) {
+        h[0][0] = x[RobotModel.A][0];
+    }
 
-	@Override
-	public void observationModelJacobian(double[][] x, double[][] j) {
-		j[0][RobotModel.A] = 1;
-	}
+    @Override
+    public void observationModelJacobian(double[][] x, double[][] j) {
+        j[0][RobotModel.A] = 1;
+    }
 
-	@Override
-	public void observationNoiseCovariance(double[][] cov) {
-		cov[0][0] = 2;
-	}
+    @Override
+    public void observationNoiseCovariance(double[][] cov) {
+        cov[0][0] = 2;
+    }
 
 }

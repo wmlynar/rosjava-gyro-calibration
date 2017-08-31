@@ -27,7 +27,7 @@ public class RobotModel extends ProcessModel {
 		x[S][0] = 0;
 		x[A][0] = 0;
 		x[ROT][0] = 0;
-		x[B][0] = 12;
+		x[B][0] = 12; // initial value with error
 		x[L][0] = 0;
 		x[R][0] = 0;
 		x[X1][0] = -100;

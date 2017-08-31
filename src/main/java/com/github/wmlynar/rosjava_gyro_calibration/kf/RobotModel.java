@@ -38,9 +38,9 @@ public class RobotModel extends ProcessModel {
 	public void initialStateCovariance(double[][] cov) {
 		cov[X][X] = 0.001;
 		cov[Y][Y] = 0.001;
-		cov[S][S] = 10;
-		cov[A][A] = 0.001;
-		cov[ROT][ROT] = 0.001;
+		cov[S][S] = 1;
+		cov[A][A] = 1;
+		cov[ROT][ROT] = 1;
 		cov[B][B] = 10;
 		cov[L][L] = 0.001;
 		cov[R][R] = 0.001;

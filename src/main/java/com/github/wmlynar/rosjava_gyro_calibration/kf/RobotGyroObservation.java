@@ -35,7 +35,7 @@ public class RobotGyroObservation extends ObservationModel {
 
 	@Override
 	public void observationNoiseCovariance(double[][] cov) {
-		cov[0][0] = 1e-2;
+		cov[0][0] = 1e-6;
 	}
 
 }

@@ -6,17 +6,29 @@ import org.jfree.ui.RefineryUtilities;
 
 public class Plots {
 	
-	private static HashMap<String, XTimePlotter> plotsMap = new HashMap<>();
+	private static HashMap<String, XTimePlotter> plotsXTimeMap = new HashMap<>();
+	private static HashMap<String, XyPlotter> plotsXyMap = new HashMap<>();
 	
 	public static void plotXTime(String plotName, String seriesName, double time, double x) {
-		XTimePlotter plot = plotsMap.get(plotName);
+		XTimePlotter plot = plotsXTimeMap.get(plotName);
 		if(plot==null) {
 			plot = new XTimePlotter(plotName);
 			RefineryUtilities.centerFrameOnScreen(plot);
 			plot.setVisible(true);
-			plotsMap.put(plotName, plot);
+			plotsXTimeMap.put(plotName, plot);
 		}
 		plot.addValues(seriesName, time, x);
+	}
+
+	public static void plotXy(String plotName, String seriesName, double x, double y) {
+		XyPlotter plot = plotsXyMap.get(plotName);
+		if(plot==null) {
+			plot = new XyPlotter(plotName);
+			RefineryUtilities.centerFrameOnScreen(plot);
+			plot.setVisible(true);
+			plotsXyMap.put(plotName, plot);
+		}
+		plot.addValues(seriesName, x, y);
 	}
 
 }

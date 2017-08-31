@@ -11,6 +11,13 @@ public class Simulation {
 	
 	public static void main(String[] args) {
 
+		RobotSimulator simulator = new RobotSimulator();
+		simulator.setRotationNoise(1);
+		simulator.setSpeed(1);
+		simulator.setAccelerationNoise(1);
+		simulator.setBiasDrift(0.001);
+		simulator.setTimeStep(0.001);
+		
 		RobotAngleObservation angleObs = new RobotAngleObservation();
 		RobotOdomObservation odomObs = new RobotOdomObservation();
 		BeaconObservation beaconObs = new BeaconObservation();
@@ -19,44 +26,10 @@ public class Simulation {
 		KalmanFilter filter = new KalmanFilter(process);
 		filter.setMaximalTimeStep(0.5);
 		
-		RobotSimulator simulator = new RobotSimulator();
-		simulator.setRotationNoise(10);
-		simulator.setSpeed(1);
-		simulator.setAccelerationNoise(1);
-		simulator.setTimeStep(0.001);
-		
-		
-		XyPlotter plotXy = new XyPlotter("Robot xy");
-		RefineryUtilities.centerFrameOnScreen(plotXy);
-		plotXy.setVisible(true);
-
-		final XTimePlotter plotDist = new XTimePlotter("Robot distances");
-		RefineryUtilities.centerFrameOnScreen(plotDist);
-		plotDist.setVisible(true);
-		
-		final XTimePlotter plotSpeed = new XTimePlotter("Robot speed");
-		RefineryUtilities.centerFrameOnScreen(plotSpeed);
-		plotSpeed.setVisible(true);
-		
-		final XTimePlotter plotAngle = new XTimePlotter("Robot angles");
-		RefineryUtilities.centerFrameOnScreen(plotAngle);
-		plotAngle.setVisible(true);
-		
-		final XTimePlotter plotWidth = new XTimePlotter("Robot width");
-		RefineryUtilities.centerFrameOnScreen(plotWidth);
-		plotWidth.setVisible(true);
-		
 		int i=0;
-		for(double d = 0; d<100; d+=0.1) {
+		for(double d = 0; d<200; d+=0.1) {
 			simulator.simulate(d);
 			if(i%10==0) {
-				plotXy.addValues("sim position", simulator.getX(), simulator.getY());
-				plotDist.addValues("sim left", d, simulator.getDistanceLeft());
-				plotDist.addValues("sim right", d, simulator.getDistanceRight());
-				plotSpeed.addValues("sim speed", d, simulator.getSpeed());
-				plotAngle.addValues("sim angle", d, simulator.getAngle());
-//				plotAngle.addValues("sim beacon angle", d, simulator.getBeaconAngle());
-				
 //				angleObs.angle = 0;
 //				filter.update(d, angleObs);
 				odomObs.left = simulator.getDistanceLeft();
@@ -68,13 +41,22 @@ public class Simulation {
 				gyroObs.gyroMeasurement = simulator.getGyroMeasurement();
 				filter.update(d, gyroObs);
 
-				plotXy.addValues("filter position", process.getX(), process.getY());
-				plotDist.addValues("filter left", d, process.getDistanceLeft());
-				plotDist.addValues("filter right", d, process.getDistanceRight());
-				plotSpeed.addValues("filter speed", d, process.getSpeed());
-				plotAngle.addValues("filter angle", d, process.getAngle());
 				
-				plotWidth.addValues("filter width", d, process.getWidth());
+				Plots.plotXy("position","sim", simulator.getX(), simulator.getY());
+				Plots.plotXy("position","filter", process.getX(), process.getY());
+				
+				Plots.plotXTime("distances", "sim left", d, simulator.getDistanceLeft());
+				Plots.plotXTime("distances", "sim right", d, simulator.getDistanceRight());
+				Plots.plotXTime("distances", "filter left", d, process.getDistanceLeft());
+				Plots.plotXTime("distances", "filter right", d, process.getDistanceRight());
+				
+				Plots.plotXTime("speed", "sim", d, simulator.getSpeed());
+				Plots.plotXTime("speed", "filter", d, process.getSpeed());
+				
+				Plots.plotXTime("angle", "sim", d, simulator.getAngle());
+				Plots.plotXTime("angle", "filter", d, process.getAngle());
+
+				Plots.plotXTime("width", "filtered", d, process.getWidth());
 				
 				Plots.plotXTime("gyro bias", "sim", d, simulator.getBias());
 				Plots.plotXTime("gyro bias", "filter", d, process.getBias());

@@ -34,7 +34,7 @@ public class RobotModel extends ProcessModel {
 		x[R][0] = 0;
 		x[X1][0] = -100;
 		x[Y1][0] = 0;
-		x[BIAS][0] = 1;
+		x[BIAS][0] = 1.0;
 		x[INVGAIN][0] = 1;
 	}
 
@@ -50,8 +50,8 @@ public class RobotModel extends ProcessModel {
 		cov[R][R] = 0.001;
 		cov[X1][X1] = 1000;
 		cov[Y1][Y1] = 1000;
-		cov[BIAS][0] = 0.001;
-		cov[INVGAIN][0] = 0.001;
+		cov[BIAS][0] = 100;
+		cov[INVGAIN][0] = 0.01;
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class RobotModel extends ProcessModel {
 		cov[R][R] = 1e-6;
 		cov[X1][X1] = 1e-6;
 		cov[Y1][Y1] = 1e-6;
-		cov[BIAS][0] = 1e-6;
+		cov[BIAS][0] = 1e-4;
 		cov[INVGAIN][0] = 1e-6;
 	}
 	

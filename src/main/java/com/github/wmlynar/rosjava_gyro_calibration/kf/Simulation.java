@@ -20,7 +20,7 @@ public class Simulation {
 		RobotSimulator simulator = new RobotSimulator();
 		simulator.setRotationNoise(10);
 		simulator.setSpeed(1);
-		simulator.setAccelerationNoise(0.1);
+		simulator.setAccelerationNoise(1);
 		simulator.setTimeStep(0.001);
 		
 		

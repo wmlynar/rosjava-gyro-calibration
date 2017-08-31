@@ -1,4 +1,4 @@
-package com.github.wmlynar.calibration;
+package com.github.wmlynar.rosjava.logging;
 
 import nav_msgs.Odometry;
 import sensor_msgs.LaserScan;

@@ -1,4 +1,4 @@
-package com.github.wmlynar.calibration;
+package com.github.wmlynar.rosjava.logging;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

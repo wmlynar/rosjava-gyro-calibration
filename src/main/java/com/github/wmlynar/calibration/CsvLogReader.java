@@ -13,7 +13,7 @@ public class CsvLogReader {
 
 	public CsvLogReader(String name) {
 		try {
-			reader = new CSVReader(new FileReader(name), ',', '"');
+			reader = new CSVReader(new FileReader(name), ',');
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e);
 		}

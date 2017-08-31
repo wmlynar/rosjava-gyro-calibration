@@ -14,28 +14,39 @@ public class CsvLogWriter {
 	public static synchronized void initialize(String name) {
 		try {
 			CsvLogWriter.fileWriter = new FileWriter(name);
-			CsvLogWriter.writer = new CSVWriter(CsvLogWriter.fileWriter, ',', '"');
+			CsvLogWriter.writer = new CSVWriter(CsvLogWriter.fileWriter, ',');
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public static synchronized void log(String key, double time, int... values) {
+	public static synchronized void log(String key, long time, int... values) {
 		CsvLogWriter.checkInitialized();
 		String strings[] = new String[values.length + 2];
 		strings[0] = key;
-		strings[1] = Double.toString(time);
+		strings[1] = Long.toString(time);
 		for (int i = 0; i < values.length; i++) {
 			strings[i + 2] = Integer.toString(values[i]);
 		}
 		CsvLogWriter.write(strings);
 	}
 
-	public static synchronized void write(String key, double time, double... values) {
+	public static synchronized void log(String key, long time, float... values) {
 		CsvLogWriter.checkInitialized();
 		String strings[] = new String[values.length + 2];
 		strings[0] = key;
-		strings[1] = Double.toString(time);
+		strings[1] = Long.toString(time);
+		for (int i = 0; i < values.length; i++) {
+			strings[i + 2] = Float.toString(values[i]);
+		}
+		CsvLogWriter.write(strings);
+	}
+
+	public static synchronized void log(String key, long time, double... values) {
+		CsvLogWriter.checkInitialized();
+		String strings[] = new String[values.length + 2];
+		strings[0] = key;
+		strings[1] = Long.toString(time);
 		for (int i = 0; i < values.length; i++) {
 			strings[i + 2] = Double.toString(values[i]);
 		}

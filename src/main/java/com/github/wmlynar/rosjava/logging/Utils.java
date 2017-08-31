@@ -1,4 +1,4 @@
-package com.github.wmlynar.ekf.utils;
+package com.github.wmlynar.rosjava.logging;
 
 import geometry_msgs.Quaternion;
 

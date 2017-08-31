@@ -39,6 +39,8 @@ public class RosMessagesLoggerNode extends AbstractNodeMain {
     private Subscriber<nav_msgs.Odometry> odomSubscriber;
     private Subscriber<sensor_msgs.LaserScan> scanSubscriber;
 
+    private RosMessageLogger rosMessageLogger = new RosMessageLogger();
+
     @Override
     public GraphName getDefaultNodeName() {
         return GraphName.of("ros_logger");
@@ -50,9 +52,9 @@ public class RosMessagesLoggerNode extends AbstractNodeMain {
         odomSubscriber = connectedNode.newSubscriber("odom", nav_msgs.Odometry._TYPE);
         odomSubscriber.addMessageListener(new MessageListener<Odometry>() {
             @Override
-            public void onNewMessage(Odometry message) {
+            public void onNewMessage(Odometry odom) {
                 try {
-                    // onOdomMessage(message);
+                    rosMessageLogger.logOdom(odom);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -63,9 +65,9 @@ public class RosMessagesLoggerNode extends AbstractNodeMain {
         scanSubscriber = connectedNode.newSubscriber("base_scan", sensor_msgs.LaserScan._TYPE);
         scanSubscriber.addMessageListener(new MessageListener<LaserScan>() {
             @Override
-            public void onNewMessage(LaserScan message) {
+            public void onNewMessage(LaserScan scan) {
                 try {
-                    // onScanMessage(message);
+                    rosMessageLogger.logScan(scan);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

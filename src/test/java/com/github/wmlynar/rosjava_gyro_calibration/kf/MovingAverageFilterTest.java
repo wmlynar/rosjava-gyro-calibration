@@ -16,6 +16,7 @@ public class MovingAverageFilterTest {
 		for (int i = 10; i < 20; i++) {
 			sum += i;
 		}
+		sum /= 10;
 
 		Assert.assertTrue(maFilter.hasAverage());
 		double average = maFilter.getAverage();

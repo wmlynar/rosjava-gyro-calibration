@@ -40,14 +40,14 @@ public class RobotModel extends ProcessModel {
 
 	@Override
 	public void initialStateCovariance(double[][] cov) {
-		cov[RobotModel.X][RobotModel.X] = 0.001;
-		cov[RobotModel.Y][RobotModel.Y] = 0.001;
+		cov[RobotModel.X][RobotModel.X] = 1e-4;
+		cov[RobotModel.Y][RobotModel.Y] = 1e-4;
 		cov[RobotModel.S][RobotModel.S] = 1;
 		cov[RobotModel.A][RobotModel.A] = 1;
 		cov[RobotModel.ROT][RobotModel.ROT] = 1;
 		cov[RobotModel.WIDTH][RobotModel.WIDTH] = 10;
-		cov[RobotModel.L][RobotModel.L] = 0.001;
-		cov[RobotModel.R][RobotModel.R] = 0.001;
+		cov[RobotModel.L][RobotModel.L] = 1e-4;
+		cov[RobotModel.R][RobotModel.R] = 1e-4;
 		cov[RobotModel.X1][RobotModel.X1] = 1000;
 		cov[RobotModel.Y1][RobotModel.Y1] = 1000;
 		cov[RobotModel.BIAS][RobotModel.BIAS] = 1e-4;

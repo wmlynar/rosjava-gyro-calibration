@@ -11,7 +11,7 @@ public class Simulation {
 		simulator.setRotationNoise(1);
 		simulator.setSpeed(1);
 		simulator.setAccelerationNoise(1);
-		simulator.setBiasDrift(0.01);
+		simulator.setBiasDrift(0.1);
 		simulator.setTimeStep(0.001);
 
 		RobotAngleObservation angleObs = new RobotAngleObservation();
@@ -33,12 +33,10 @@ public class Simulation {
 				odomObs.left = simulator.getDistanceLeft();
 				odomObs.right = simulator.getDistanceRight();
 				filter.update(d, odomObs);
-				if (i < 300) {
-					// calibration
-					beaconObs.beaconAngle = simulator.getBeaconAngle();
-					beaconObs.beaconDistance = simulator.getBeaconDistance();
-					filter.update(d, beaconObs);
-				}
+				// calibration
+				beaconObs.beaconAngle = simulator.getBeaconAngle();
+				beaconObs.beaconDistance = simulator.getBeaconDistance();
+				filter.update(d, beaconObs);
 
 				Plots.plotXy("position", "sim", simulator.getX(), simulator.getY());
 				Plots.plotXy("position", "filter", process.getX(), process.getY());

@@ -30,7 +30,7 @@ public class RobotGyroObservation extends ObservationModel {
 	public void observationModelJacobian(double[][] x, double[][] j) {
 		j[0][RobotModel.ROT] = x[RobotModel.INVGAIN][0];
 		j[0][RobotModel.BIAS] = x[RobotModel.INVGAIN][0];
-		j[0][RobotModel.INVGAIN] = x[RobotModel.ROT][0] + j[0][RobotModel.BIAS];
+		j[0][RobotModel.INVGAIN] = x[RobotModel.ROT][0] + x[RobotModel.BIAS][0];
 	}
 
 	@Override

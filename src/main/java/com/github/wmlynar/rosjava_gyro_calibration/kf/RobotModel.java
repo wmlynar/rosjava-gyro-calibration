@@ -66,8 +66,8 @@ public class RobotModel extends ProcessModel {
 		f[R][0] = x[S][0] - x[B][0]*x[ROT][0];
 		f[X1][0] = 0;
 		f[Y1][0] = 0;
-		x[BIAS][0] = 0;
-		x[INVGAIN][0] = 0;
+		f[BIAS][0] = 0;
+		f[INVGAIN][0] = 0;
 	}
 
 	@Override
@@ -83,8 +83,6 @@ public class RobotModel extends ProcessModel {
 		j[R][S] = 1;
 		j[R][B] = -x[ROT][0];
 		j[R][ROT] = -x[B][0];
-		j[X1][0] = 0;
-		j[Y1][0] = 0;
 	}
 
 	@Override
@@ -129,6 +127,14 @@ public class RobotModel extends ProcessModel {
 
 	public double getWidth() {
 		return getState()[B][0];
+	}
+
+	public double getBias() {
+		return getState()[BIAS][0];
+	}
+
+	public double getGain() {
+		return getState()[INVGAIN][0];
 	}
 
 }

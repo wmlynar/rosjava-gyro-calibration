@@ -30,7 +30,7 @@ public class XTimePlotter extends ApplicationFrame{
 	public XTimePlotter(String title) {
 		super(title);
 		
-		chart = ChartFactory.createXYLineChart("XY Series Demo", "X", "Y", data,
+		chart = ChartFactory.createXYLineChart(title, "X", "Y", data,
 				PlotOrientation.VERTICAL, true, true, false);
 
 		plot = (XYPlot) chart.getPlot();

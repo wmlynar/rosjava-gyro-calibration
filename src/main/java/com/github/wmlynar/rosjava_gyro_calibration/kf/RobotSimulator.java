@@ -118,6 +118,12 @@ public class RobotSimulator {
 		return (rotation + bias) * invgain;
 	}
 
-	
+	public double getBias() {
+		return bias;
+	}
+
+	public double getGain() {
+		return invgain;
+	}
 
 }

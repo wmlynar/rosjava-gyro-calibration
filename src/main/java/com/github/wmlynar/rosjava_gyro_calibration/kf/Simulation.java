@@ -3,6 +3,7 @@ package com.github.wmlynar.rosjava_gyro_calibration.kf;
 import org.jfree.ui.RefineryUtilities;
 
 import com.github.wmlynar.ekf.KalmanFilter;
+import com.github.wmlynar.ekf.utils.Plots;
 import com.github.wmlynar.ekf.utils.XTimePlotter;
 import com.github.wmlynar.ekf.utils.XyPlotter;
 
@@ -74,6 +75,9 @@ public class Simulation {
 				plotAngle.addValues("filter angle", d, process.getAngle());
 				
 				plotWidth.addValues("filter width", d, process.getWidth());
+				
+				Plots.plotXTime("gyro bias", "sim", d, simulator.getBias());
+				Plots.plotXTime("gyro bias", "filter", d, process.getBias());
 			}
 			
 			i++;

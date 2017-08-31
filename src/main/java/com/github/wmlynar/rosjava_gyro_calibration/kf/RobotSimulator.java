@@ -126,4 +126,8 @@ public class RobotSimulator {
 		return invgain;
 	}
 
+	public double getRotation() {
+		return rotation;
+	}
+
 }

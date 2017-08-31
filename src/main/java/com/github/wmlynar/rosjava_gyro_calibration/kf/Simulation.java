@@ -15,7 +15,7 @@ public class Simulation {
 		simulator.setRotationNoise(1);
 		simulator.setSpeed(1);
 		simulator.setAccelerationNoise(1);
-		simulator.setBiasDrift(0.001);
+		simulator.setBiasDrift(0.01);
 		simulator.setTimeStep(0.001);
 		
 		RobotAngleObservation angleObs = new RobotAngleObservation();
@@ -24,22 +24,22 @@ public class Simulation {
 		RobotGyroObservation gyroObs = new RobotGyroObservation();
 		RobotModel process = new RobotModel();
 		KalmanFilter filter = new KalmanFilter(process);
-		filter.setMaximalTimeStep(0.5);
+		filter.setMaximalTimeStep(0.1);
 		
 		int i=0;
-		for(double d = 0; d<200; d+=0.1) {
+		for(double d = 0; d<2000; d+=0.1) {
 			simulator.simulate(d);
 			if(i%10==0) {
 //				angleObs.angle = 0;
 //				filter.update(d, angleObs);
+//				gyroObs.gyroMeasurement = simulator.getGyroMeasurement();
+//				filter.update(d, gyroObs);
 				odomObs.left = simulator.getDistanceLeft();
 				odomObs.right = simulator.getDistanceRight();
 				filter.update(d, odomObs);
 				beaconObs.beaconAngle = simulator.getBeaconAngle();
 				beaconObs.beaconDistance = simulator.getBeaconDistance();
 				filter.update(d, beaconObs);
-				gyroObs.gyroMeasurement = simulator.getGyroMeasurement();
-				filter.update(d, gyroObs);
 
 				
 				Plots.plotXy("position","sim", simulator.getX(), simulator.getY());
@@ -60,6 +60,9 @@ public class Simulation {
 				
 				Plots.plotXTime("gyro bias", "sim", d, simulator.getBias());
 				Plots.plotXTime("gyro bias", "filter", d, process.getBias());
+				
+				Plots.plotXTime("rotation", "sim", d, simulator.getRotation());
+				Plots.plotXTime("rotation", "filter", d, process.getRotation());
 			}
 			
 			i++;

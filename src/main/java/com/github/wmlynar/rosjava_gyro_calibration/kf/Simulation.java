@@ -26,14 +26,14 @@ public class Simulation {
         for (double d = 0; d < 2000; d += 0.1) {
             simulator.simulate(d);
             if (i % 10 == 0) {
-                // angleObs.angle = 0;
-                // filter.update(d, angleObs);
+
                 gyroObs.gyroMeasurement = simulator.getGyroMeasurement();
                 filter.update(d, gyroObs);
+
                 odomObs.left = simulator.getDistanceLeft();
                 odomObs.right = simulator.getDistanceRight();
                 filter.update(d, odomObs);
-                // calibration
+
                 beaconObs.beaconAngle = simulator.getBeaconAngle();
                 beaconObs.beaconDistance = simulator.getBeaconDistance();
                 filter.update(d, beaconObs);

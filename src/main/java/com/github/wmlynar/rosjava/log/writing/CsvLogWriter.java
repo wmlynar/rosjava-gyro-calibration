@@ -1,4 +1,4 @@
-package com.github.wmlynar.rosjava.logging;
+package com.github.wmlynar.rosjava.log.writing;
 
 import java.io.FileWriter;
 import java.io.IOException;

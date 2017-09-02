@@ -1,4 +1,4 @@
-package com.github.wmlynar.rosjava.logging;
+package com.github.wmlynar.rosjava.log.writing;
 
 public interface RosMessageReceiver {
 

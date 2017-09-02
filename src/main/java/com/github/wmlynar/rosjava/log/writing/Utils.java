@@ -1,4 +1,4 @@
-package com.github.wmlynar.rosjava.logging;
+package com.github.wmlynar.rosjava.log.writing;
 
 import geometry_msgs.Quaternion;
 
@@ -21,5 +21,4 @@ public class Utils {
         double cosy = +1.0 - 2.0 * (q.getY() * q.getY() + q.getZ() * q.getZ());
         return Math.atan2(siny, cosy);
     }
-
 }

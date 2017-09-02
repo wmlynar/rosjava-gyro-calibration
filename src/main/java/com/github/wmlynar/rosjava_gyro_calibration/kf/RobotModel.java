@@ -29,7 +29,7 @@ public class RobotModel extends ProcessModel {
         x[RobotModel.S][0] = 1;
         x[RobotModel.A][0] = 0;
         x[RobotModel.ROT][0] = 0;
-        x[RobotModel.WIDTH][0] = 10; // initial value with error
+        x[RobotModel.WIDTH][0] = 15; // initial value with error
         x[RobotModel.L][0] = 0;
         x[RobotModel.R][0] = 0;
         x[RobotModel.X1][0] = -100;
@@ -45,7 +45,7 @@ public class RobotModel extends ProcessModel {
         cov[RobotModel.S][RobotModel.S] = 1;
         cov[RobotModel.A][RobotModel.A] = 1;
         cov[RobotModel.ROT][RobotModel.ROT] = 1;
-        cov[RobotModel.WIDTH][RobotModel.WIDTH] = 10;
+        cov[RobotModel.WIDTH][RobotModel.WIDTH] = 100;
         cov[RobotModel.L][RobotModel.L] = 1e-4;
         cov[RobotModel.R][RobotModel.R] = 1e-4;
         cov[RobotModel.X1][RobotModel.X1] = 1000;

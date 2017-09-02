@@ -3,8 +3,8 @@ package com.github.wmlynar.calibration;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.github.wmlynar.rosjava.logging.CsvLogReader;
-import com.github.wmlynar.rosjava.logging.CsvLogWriter;
+import com.github.wmlynar.rosjava.log.reading.CsvLogReader;
+import com.github.wmlynar.rosjava.log.writing.CsvLogWriter;
 
 public class CsvLogWriterReaderTest {
 

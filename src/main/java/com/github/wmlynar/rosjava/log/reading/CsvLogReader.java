@@ -1,4 +1,4 @@
-package com.github.wmlynar.rosjava.logging;
+package com.github.wmlynar.rosjava.log.reading;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.github.wmlynar.rosjava.logging;
+package com.github.wmlynar.rosjava.log.writing;
 
 import java.net.URI;
 

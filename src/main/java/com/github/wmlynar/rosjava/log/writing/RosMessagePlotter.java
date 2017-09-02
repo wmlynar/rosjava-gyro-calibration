@@ -1,4 +1,4 @@
-package com.github.wmlynar.rosjava.logging;
+package com.github.wmlynar.rosjava.log.writing;
 
 import com.github.wmlynar.ekf.utils.Plots;
 
@@ -8,7 +8,6 @@ public class RosMessagePlotter implements RosMessageReceiver {
 
     @Override
     public void processScan(long n, float[] ranges) {
-        CsvLogWriter.log("scan", n, ranges);
         double value = scanInterpreter.processScan(ranges);
         Plots.plotXTime("angle", "scan", n, value);
     }

@@ -48,7 +48,6 @@ public class RosLogPlayerNodeNode extends AbstractNodeMain {
         this.connectedNode = connectedNode;
 
         initializedLatch.countDown();
-        System.out.println("initialized player");
     }
 
     public void start() {
@@ -64,9 +63,7 @@ public class RosLogPlayerNodeNode extends AbstractNodeMain {
 
             @Override
             protected void loop() throws InterruptedException {
-                // startLatch.countDown();
                 String type = reader.getNextMessageType();
-                System.out.println("publishing :" + type);
                 switch (type) {
                 case "end":
                     finishedLatch.countDown();
@@ -83,7 +80,6 @@ public class RosLogPlayerNodeNode extends AbstractNodeMain {
                 default:
                     throw new RuntimeException("Unknown type: " + type);
                 }
-                // Thread.sleep(1000);
             }
         });
     }

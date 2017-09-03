@@ -28,7 +28,6 @@ public class ReadWriteTest {
             RosMain.awaitForConnections(6);
             player.start();
             recorder.awaitForMessages(player.getNumberOfMessages());
-            System.out.println("finished");
         } catch (InterruptedException e) {
         }
 

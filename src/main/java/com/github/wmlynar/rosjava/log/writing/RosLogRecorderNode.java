@@ -69,7 +69,6 @@ public class RosLogRecorderNode extends AbstractNodeMain {
             @Override
             public void onNewMessage(Odometry odom) {
                 try {
-                    System.out.println("received : odom");
                     rosMessageTranslator.logOdom(odom);
                     messagesCount.countUp();
                 } catch (Exception e) {
@@ -84,7 +83,6 @@ public class RosLogRecorderNode extends AbstractNodeMain {
             @Override
             public void onNewMessage(LaserScan scan) {
                 try {
-                    System.out.println("received : scan");
                     rosMessageTranslator.logScan(scan);
                     messagesCount.countUp();
                 } catch (Exception e) {
@@ -99,7 +97,6 @@ public class RosLogRecorderNode extends AbstractNodeMain {
             @Override
             public void onNewMessage(Vector3Stamped dist) {
                 try {
-                    System.out.println("received : dist");
                     rosMessageTranslator.logDist(dist);
                     messagesCount.countUp();
                 } catch (Exception e) {
@@ -107,8 +104,6 @@ public class RosLogRecorderNode extends AbstractNodeMain {
                 }
             }
         }, queueSize);
-
-        System.out.println("initialized recorder");
     }
 
     public void awaitForMessages(int count) throws InterruptedException {

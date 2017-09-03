@@ -24,9 +24,9 @@ public class RosMessageFactory {
     }
 
     public static float[] newScansFromStrings(String[] strings) {
-        float floats[] = new float[strings.length - 1];
+        float floats[] = new float[strings.length - 2];
         for (int i = 0; i < floats.length; i++) {
-            floats[i] = Float.parseFloat(strings[i + 1]);
+            floats[i] = Float.parseFloat(strings[i + 2]);
         }
         return floats;
     }
@@ -42,14 +42,14 @@ public class RosMessageFactory {
         return m;
     }
 
-    public LaserScan newScanMessage(String[] line) {
+    public static LaserScan newScanMessage(String[] line) {
         LaserScan m = messageFactory.newFromType(LaserScan._TYPE);
         m.getHeader().setStamp(Time.fromNano(Long.parseLong(line[1])));
         m.setRanges(newScansFromStrings(line));
         return m;
     }
 
-    public Vector3Stamped newDistMessage(String[] line) {
+    public static Vector3Stamped newDistMessage(String[] line) {
         Vector3Stamped m = messageFactory.newFromType(Vector3Stamped._TYPE);
         m.getHeader().setStamp(Time.fromNano(Long.parseLong(line[1])));
         m.getVector().setX(Double.parseDouble(line[2]));

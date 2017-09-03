@@ -10,8 +10,6 @@ public class RosMessageReader {
 
     public static final String[] END = new String[] { "end" };
 
-    // HashMap<String, ArrayList<String[]>> messages = new HashMap<>();
-
     private CsvLogReader reader;
     private ArrayList<String[]> messages = new ArrayList<>();
     private long startTime = -1;
@@ -24,9 +22,9 @@ public class RosMessageReader {
     }
 
     public String getNextMessageType() {
-        if (line != null) {
-            return line[0];
-        }
+        // if (line != null) {
+        // return line[0];
+        // }
         if (messagesIndex < messages.size()) {
             line = messages.get(messagesIndex++);
             if (startTime == -1) {
@@ -39,25 +37,29 @@ public class RosMessageReader {
     }
 
     public Odometry getNextOdomMessage() {
-        return null;
+        return RosMessageFactory.newOdomMessage(line);
     }
 
     public LaserScan getNextScanMessage() {
-        return null;
+        return RosMessageFactory.newScanMessage(line);
     }
 
     public Vector3Stamped getNextDistMessage() {
-        return null;
+        return RosMessageFactory.newDistMessage(line);
     }
 
     private void readLog() {
-        while (true) {
+        while (reader.hasNext()) {
             String[] line = reader.readLine();
             if (line == null) {
                 return;
             }
             messages.add(line);
         }
+    }
+
+    public int getNumberOfMessages() {
+        return messages.size();
     }
 
     // private void addLine(String[] line) {

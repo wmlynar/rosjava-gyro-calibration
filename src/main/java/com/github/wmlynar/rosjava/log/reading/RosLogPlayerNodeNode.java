@@ -1,35 +1,62 @@
 package com.github.wmlynar.rosjava.log.reading;
 
+import java.util.concurrent.CountDownLatch;
+
 import org.ros.concurrent.CancellableLoop;
 import org.ros.namespace.GraphName;
 import org.ros.node.AbstractNodeMain;
 import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Publisher;
 
+import com.github.wmlynar.rosjava.utils.RosMain;
+
 import geometry_msgs.Vector3Stamped;
 import nav_msgs.Odometry;
 import sensor_msgs.LaserScan;
 
-public class RosMessagePublisherNode extends AbstractNodeMain {
+public class RosLogPlayerNodeNode extends AbstractNodeMain {
 
-    RosMessageReader reader = new RosMessageReader(
-            "src/main/resources/log_neato_scan_odom_dist_rotating_only_close.csv");
+    private RosMessageReader reader;
 
     private Publisher<Odometry> odomPublisher;
     private Publisher<LaserScan> scanPublisher;
     private Publisher<Vector3Stamped> distPublisher;
 
+    private ConnectedNode connectedNode;
+
+    CountDownLatch initializedLatch = new CountDownLatch(1);
+    CountDownLatch finishedLatch = new CountDownLatch(1);
+
+    public RosLogPlayerNodeNode(String name) {
+        reader = new RosMessageReader(name);
+    }
+
     @Override
     public GraphName getDefaultNodeName() {
-        return GraphName.of("ros_player");
+        return GraphName.of("ros_log_player");
     }
 
     @Override
     public void onStart(final ConnectedNode connectedNode) {
         odomPublisher = connectedNode.newPublisher("odom", Odometry._TYPE);
+        odomPublisher.addListener(RosMain.getPublisherListener());
         scanPublisher = connectedNode.newPublisher("base_scan", LaserScan._TYPE);
+        scanPublisher.addListener(RosMain.getPublisherListener());
         distPublisher = connectedNode.newPublisher("dist", Vector3Stamped._TYPE);
+        distPublisher.addListener(RosMain.getPublisherListener());
 
+        this.connectedNode = connectedNode;
+
+        initializedLatch.countDown();
+        System.out.println("initialized player");
+    }
+
+    public void start() {
+        try {
+            initializedLatch.await();
+        } catch (InterruptedException e1) {
+        }
+        finishedLatch = new CountDownLatch(1);
         connectedNode.executeCancellableLoop(new CancellableLoop() {
             @Override
             protected void setup() {
@@ -37,23 +64,36 @@ public class RosMessagePublisherNode extends AbstractNodeMain {
 
             @Override
             protected void loop() throws InterruptedException {
+                // startLatch.countDown();
                 String type = reader.getNextMessageType();
+                System.out.println("publishing :" + type);
                 switch (type) {
                 case "end":
-                    return;
+                    finishedLatch.countDown();
+                    throw new InterruptedException();
                 case "odom":
                     odomPublisher.publish(reader.getNextOdomMessage());
                     break;
                 case "scan":
                     scanPublisher.publish(reader.getNextScanMessage());
-                    return;
+                    break;
                 case "dist":
                     distPublisher.publish(reader.getNextDistMessage());
-                    return;
+                    break;
                 default:
                     throw new RuntimeException("Unknown type: " + type);
                 }
+                // Thread.sleep(1000);
             }
         });
     }
+
+    public void awaitFinished() throws InterruptedException {
+        finishedLatch.await();
+    }
+
+    public int getNumberOfMessages() {
+        return reader.getNumberOfMessages();
+    }
+
 }

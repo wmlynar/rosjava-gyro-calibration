@@ -2,71 +2,75 @@ package com.github.wmlynar.rosjava.log.writing;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 
 import com.opencsv.CSVWriter;
 
 public class CsvLogWriter {
 
     private static final String DEFAULT_NAME = "log.csv";
-    private static FileWriter fileWriter = null;
-    private static CSVWriter writer = null;
+    private static HashMap<String, FileWriter> fileWriterMap = new HashMap<String, FileWriter>();
+    private static HashMap<String, CSVWriter> csvWriterMap = new HashMap<String, CSVWriter>();
 
-    public static synchronized void initialize(String name) {
-        try {
-            CsvLogWriter.fileWriter = new FileWriter(name);
-            CsvLogWriter.writer = new CSVWriter(CsvLogWriter.fileWriter, ',');
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static synchronized void log(String key, long time, int... values) {
-        CsvLogWriter.checkInitialized();
+    public static synchronized void log(String logName, String key, long time, int... values) {
         String strings[] = new String[values.length + 2];
         strings[0] = key;
         strings[1] = Long.toString(time);
         for (int i = 0; i < values.length; i++) {
             strings[i + 2] = Integer.toString(values[i]);
         }
-        CsvLogWriter.write(strings);
+        write(logName, strings);
     }
 
-    public static synchronized void log(String key, long time, float... values) {
-        CsvLogWriter.checkInitialized();
+    public static synchronized void log(String logName, String key, long time, float... values) {
         String strings[] = new String[values.length + 2];
         strings[0] = key;
         strings[1] = Long.toString(time);
         for (int i = 0; i < values.length; i++) {
             strings[i + 2] = Float.toString(values[i]);
         }
-        CsvLogWriter.write(strings);
+        write(logName, strings);
     }
 
-    public static synchronized void log(String key, long time, double... values) {
-        CsvLogWriter.checkInitialized();
+    public static synchronized void log(String logName, String key, long time, double... values) {
         String strings[] = new String[values.length + 2];
         strings[0] = key;
         strings[1] = Long.toString(time);
         for (int i = 0; i < values.length; i++) {
             strings[i + 2] = Double.toString(values[i]);
         }
-        CsvLogWriter.write(strings);
+        write(logName, strings);
     }
 
-    private static synchronized void write(String strings[]) {
-        CsvLogWriter.writer.writeNext(strings);
+    private static synchronized void write(String logName, String strings[]) {
+        CSVWriter writer = getCsvWriter(logName);
+        writer.writeNext(strings);
         try {
-            CsvLogWriter.writer.flush();
-            CsvLogWriter.fileWriter.flush();
+            writer.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static void checkInitialized() {
-        if (CsvLogWriter.fileWriter == null) {
-            CsvLogWriter.initialize(CsvLogWriter.DEFAULT_NAME);
+    private static FileWriter getFileWriter(String name) throws IOException {
+        FileWriter w = fileWriterMap.get(name);
+        if (w == null) {
+            w = new FileWriter(name);
+            fileWriterMap.put(name, w);
         }
+        return w;
     }
 
+    private static CSVWriter getCsvWriter(String name) {
+        CSVWriter w = csvWriterMap.get(name);
+        if (w == null) {
+            try {
+                w = new CSVWriter(getFileWriter(name));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            csvWriterMap.put(name, w);
+        }
+        return w;
+    }
 }

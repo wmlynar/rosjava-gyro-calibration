@@ -17,25 +17,26 @@ public class LaserBeaconTracker {
     }
 
     public void processScan(long n, float[] ranges) {
+        double prevDistance = distance;
         if (angle == -1) {
             angle = -1;
-            distance = Float.MAX_EXPONENT;
-            processRange(ranges, 0, ranges.length - 1);
+            distance = 9999999;
+            processRange(ranges, 0, ranges.length - 1, prevDistance);
             return;
         }
         int angleMin = angle - numSamples;
         int angleMax = angle + numSamples;
         angle = -1;
-        distance = Float.MAX_EXPONENT;
+        distance = 9999999;
         if (angleMin < 0) {
-            processRange(ranges, ranges.length - 1 + angleMin, ranges.length - 1);
+            processRange(ranges, ranges.length - 1 + angleMin, ranges.length - 1, prevDistance);
             angleMin = 0;
         }
         if (angleMax >= ranges.length) {
-            processRange(ranges, 0, angleMax - ranges.length + 1);
+            processRange(ranges, 0, angleMax - ranges.length + 1, prevDistance);
             angleMax = ranges.length - 1;
         }
-        processRange(ranges, angleMin, angleMax);
+        processRange(ranges, angleMin, angleMax, prevDistance);
     }
 
     public int getAngle() {
@@ -46,10 +47,14 @@ public class LaserBeaconTracker {
         return distance;
     }
 
-    private void processRange(float[] ranges, int start, int end) {
+    private void processRange(float[] ranges, int start, int end, double prevDistance) {
         for (int i = start; i <= end; i++) {
             float f = ranges[i];
-            if (f < distance && f > min && f < max && f > distance - distanceRange && f < distance + distanceRange) {
+            if (f < distance && f > min && f < max
+                    && (angle == -1 || (f > (prevDistance - distanceRange) && f < (prevDistance + distanceRange)))) {
+                if (distance > 3) {
+                    int aaa = 0;
+                }
                 distance = f;
                 angle = i;
             }

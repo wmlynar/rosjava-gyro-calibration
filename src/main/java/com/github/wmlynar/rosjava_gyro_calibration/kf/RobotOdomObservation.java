@@ -14,7 +14,7 @@ public class RobotOdomObservation extends ObservationModel {
 
     @Override
     public int stateDimension() {
-        return 12;
+        return 13;
     }
 
     @Override

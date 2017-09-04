@@ -13,7 +13,7 @@ public class RobotGyroObservation extends ObservationModel {
 
     @Override
     public int stateDimension() {
-        return 12;
+        return 13;
     }
 
     @Override

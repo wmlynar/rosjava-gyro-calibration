@@ -15,15 +15,17 @@ public class RobotSimulator {
     double accelerationNoise = 0;
     double distanceLeft = 0;
     double distanceRight = 0;
-    double width = 10;
+    double width = 0.2;
 
-    double beaconX = -100;
+    double beaconX = -1;
     double beaconY = 0;
 
     double bias = 1;
     double biasDrift = 0;
     double invgain = 1;
     double gainDrift = 0;
+
+    double laserPosition = -1;
 
     MovingAverageFilter gyroFilter = new MovingAverageFilter(10);
 
@@ -97,15 +99,15 @@ public class RobotSimulator {
     }
 
     public double getBeaconAngle() {
-        double dx = beaconX - x;
-        double dy = beaconY - y;
+        double dx = beaconX - (x + laserPosition * Math.sin(angle));
+        double dy = beaconY - (y + laserPosition * Math.cos(angle));
 
         return Math.atan2(dx, dy) + angle;
     }
 
     public double getBeaconDistance() {
-        double dx = beaconX - x;
-        double dy = beaconY - y;
+        double dx = beaconX - (x + laserPosition * Math.sin(angle));
+        double dy = beaconY - (y + laserPosition * Math.cos(angle));
 
         return Math.sqrt(dx * dx + dy * dy);
     }

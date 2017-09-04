@@ -59,6 +59,8 @@ public class Simulation {
 
                 Plots.plotXTime("rotation", "sim", d, simulator.getRotation());
                 Plots.plotXTime("rotation", "filter", d, process.getRotation());
+
+                Plots.plotXTime("laser distance", "filter", d, process.getLaserDistance());
             }
 
             i++;

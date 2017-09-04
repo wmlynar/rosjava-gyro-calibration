@@ -52,9 +52,6 @@ public class LaserBeaconTracker {
             float f = ranges[i];
             if (f < distance && f > min && f < max
                     && (angle == -1 || (f > (prevDistance - distanceRange) && f < (prevDistance + distanceRange)))) {
-                if (distance > 3) {
-                    int aaa = 0;
-                }
                 distance = f;
                 angle = i;
             }

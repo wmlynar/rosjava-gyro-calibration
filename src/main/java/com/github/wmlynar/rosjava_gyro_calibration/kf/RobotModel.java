@@ -16,10 +16,11 @@ public class RobotModel extends ProcessModel {
     public static int Y1 = 9;
     public static int BIAS = 10;
     public static int INVGAIN = 11;
+    public static int LASER = 12;
 
     @Override
     public int stateDimension() {
-        return 12;
+        return 13;
     }
 
     @Override
@@ -29,13 +30,14 @@ public class RobotModel extends ProcessModel {
         x[RobotModel.S][0] = 1;
         x[RobotModel.A][0] = 0;
         x[RobotModel.ROT][0] = 0;
-        x[RobotModel.WIDTH][0] = 15; // initial value with error
+        x[RobotModel.WIDTH][0] = 0.3; // initial value with error
         x[RobotModel.L][0] = 0;
         x[RobotModel.R][0] = 0;
         x[RobotModel.X1][0] = -100;
         x[RobotModel.Y1][0] = 0;
         x[RobotModel.BIAS][0] = 1;
         x[RobotModel.INVGAIN][0] = 1;
+        x[RobotModel.LASER][0] = -1;
     }
 
     @Override
@@ -52,6 +54,7 @@ public class RobotModel extends ProcessModel {
         cov[RobotModel.Y1][RobotModel.Y1] = 1000;
         cov[RobotModel.BIAS][RobotModel.BIAS] = 1e-4;
         cov[RobotModel.INVGAIN][RobotModel.INVGAIN] = 1e-9;
+        cov[RobotModel.LASER][RobotModel.LASER] = 1e-2;
     }
 
     @Override
@@ -68,6 +71,7 @@ public class RobotModel extends ProcessModel {
         f[RobotModel.Y1][0] = 0;
         f[RobotModel.BIAS][0] = 0;
         f[RobotModel.INVGAIN][0] = 0;
+        f[RobotModel.LASER][0] = 0;
     }
 
     @Override
@@ -98,7 +102,8 @@ public class RobotModel extends ProcessModel {
         cov[RobotModel.X1][RobotModel.X1] = 1e-6;
         cov[RobotModel.Y1][RobotModel.Y1] = 1e-6;
         cov[RobotModel.BIAS][RobotModel.BIAS] = 1e-4;
-        cov[RobotModel.INVGAIN][RobotModel.BIAS] = 1e-9;
+        cov[RobotModel.INVGAIN][RobotModel.INVGAIN] = 1e-9;
+        cov[RobotModel.LASER][RobotModel.LASER] = 1e-9;
     }
 
     public double getX() {
@@ -143,6 +148,10 @@ public class RobotModel extends ProcessModel {
                                               // getState()[RobotModel.BIAS][0])
                                               // *
                                               // getState()[RobotModel.INVGAIN][0];
+    }
+
+    public double getLaserDistance() {
+        return getState()[RobotModel.LASER][0];
     }
 
 }

@@ -14,7 +14,7 @@ public class BeaconObservation extends ObservationModel {
 
     @Override
     public int stateDimension() {
-        return 12;
+        return 13;
     }
 
     @Override
@@ -25,8 +25,8 @@ public class BeaconObservation extends ObservationModel {
 
     @Override
     public void observationModel(double[][] x, double[][] h) {
-        double dx = x[RobotModel.X1][0] - x[RobotModel.X][0];
-        double dy = x[RobotModel.Y1][0] - x[RobotModel.Y][0];
+        double dx = x[RobotModel.X1][0] - (x[RobotModel.X][0] + x[RobotModel.LASER][0] * Math.sin(x[RobotModel.A][0]));
+        double dy = x[RobotModel.Y1][0] - (x[RobotModel.Y][0] + x[RobotModel.LASER][0] * Math.cos(x[RobotModel.A][0]));
 
         h[0][0] = Math.sqrt(dx * dx + dy * dy);
         h[1][0] = Math.atan2(dx, dy) + x[RobotModel.A][0];
@@ -34,8 +34,8 @@ public class BeaconObservation extends ObservationModel {
 
     @Override
     public void observationModelJacobian(double[][] x, double[][] j) {
-        double dx = x[RobotModel.X1][0] - x[RobotModel.X][0];
-        double dy = x[RobotModel.Y1][0] - x[RobotModel.Y][0];
+        double dx = x[RobotModel.X1][0] - (x[RobotModel.X][0] + x[RobotModel.LASER][0] * Math.sin(x[RobotModel.A][0]));
+        double dy = x[RobotModel.Y1][0] - (x[RobotModel.Y][0] + x[RobotModel.LASER][0] * Math.cos(x[RobotModel.A][0]));
         double dist2 = dx * dx + dy * dy;
         double dist = Math.sqrt(dist2);
 
@@ -43,11 +43,27 @@ public class BeaconObservation extends ObservationModel {
         j[0][RobotModel.Y] = -dy / dist;
         j[0][RobotModel.X1] = dx / dist;
         j[0][RobotModel.Y1] = dy / dist;
+        // j[0][RobotModel.A] = -(x[RobotModel.LASER][0] *
+        // Math.cos(x[RobotModel.A][0]) * dx
+        // + x[RobotModel.LASER][0] * Math.sin(x[RobotModel.A][0]) * dy) / dist;
+        j[0][RobotModel.LASER] = -(Math.sin(x[RobotModel.A][0]) * dx + Math.cos(x[RobotModel.A][0]) * dy) / dist;
+
         j[1][RobotModel.X] = -dy / dist2;
         j[1][RobotModel.Y] = dx / dist2;
         j[1][RobotModel.A] = 1;
         j[1][RobotModel.X1] = dy / dist2;
         j[1][RobotModel.Y1] = -dx / dist2;
+        // j[1][RobotModel.A] = (x[RobotModel.LASER][0] * x[RobotModel.LASER][0]
+        // + x[RobotModel.LASER][0] * Math.sin(x[RobotModel.A][0]) *
+        // x[RobotModel.X][0]
+        // + x[RobotModel.LASER][0] * Math.cos(x[RobotModel.A][0]) *
+        // x[RobotModel.Y][0]
+        // - x[RobotModel.LASER][0] * Math.sin(x[RobotModel.A][0]) *
+        // x[RobotModel.X1][0]
+        // - x[RobotModel.LASER][0] * Math.cos(x[RobotModel.A][0]) *
+        // x[RobotModel.Y1][0]) / dist2;
+        j[1][RobotModel.LASER] = ((x[RobotModel.X1][0] - x[RobotModel.X][0]) * Math.cos(x[RobotModel.A][0])
+                + (x[RobotModel.Y][0] - x[RobotModel.Y1][0]) * Math.sin(x[RobotModel.A][0])) / dist2;
     }
 
     @Override

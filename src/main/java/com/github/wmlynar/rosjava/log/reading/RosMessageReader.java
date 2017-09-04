@@ -49,6 +49,7 @@ public class RosMessageReader {
         Odometry m = RosMessageFactory.newOdomMessage(line);
         initializeTime(m.getHeader().getStamp());
         m.getHeader().setStamp(m.getHeader().getStamp().add(shift));
+        waitForTime(m.getHeader().getStamp());
         return m;
     }
 
@@ -56,6 +57,7 @@ public class RosMessageReader {
         LaserScan m = RosMessageFactory.newScanMessage(line);
         initializeTime(m.getHeader().getStamp());
         m.getHeader().setStamp(m.getHeader().getStamp().add(shift));
+        waitForTime(m.getHeader().getStamp());
         return m;
     }
 
@@ -63,7 +65,19 @@ public class RosMessageReader {
         Vector3Stamped m = RosMessageFactory.newDistMessage(line);
         initializeTime(m.getHeader().getStamp());
         m.getHeader().setStamp(m.getHeader().getStamp().add(shift));
+        waitForTime(m.getHeader().getStamp());
         return m;
+    }
+
+    private void waitForTime(Time stamp) {
+        Duration sleepDuration = stamp.subtract(node.getCurrentTime());
+        if (sleepDuration.isNegative()) {
+            return;
+        }
+        try {
+            Thread.sleep(sleepDuration.totalNsecs() / 1000000);
+        } catch (InterruptedException e) {
+        }
     }
 
     private void readLog() {

@@ -75,7 +75,7 @@ public class NeatoFilterNode extends AbstractNodeMain {
     public static void main(String[] args) {
         RosMain.startAndConnectToRosCoreWithoutEnvironmentVariables();
         RosLogPlayerNodeNode playerNode = new RosLogPlayerNodeNode(
-                "src/test/resources/logging/all_messages_source.csv");
+                "src/main/resources/log_neato_scan_odom_dist_rotating_only_close.csv");
 
         NeatoFilterNode filterNode = new NeatoFilterNode();
 

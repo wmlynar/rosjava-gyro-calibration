@@ -24,11 +24,13 @@ public class RosLogPlayerNodeNode extends AbstractNodeMain {
 
     private ConnectedNode connectedNode;
 
-    CountDownLatch initializedLatch = new CountDownLatch(1);
-    CountDownLatch finishedLatch = new CountDownLatch(1);
+    private CountDownLatch initializedLatch = new CountDownLatch(1);
+    private CountDownLatch finishedLatch = new CountDownLatch(1);
+
+    private String name;
 
     public RosLogPlayerNodeNode(String name) {
-        reader = new RosMessageReader(name);
+        this.name = name;
     }
 
     @Override
@@ -38,6 +40,8 @@ public class RosLogPlayerNodeNode extends AbstractNodeMain {
 
     @Override
     public void onStart(final ConnectedNode connectedNode) {
+        reader = new RosMessageReader(name, connectedNode);
+
         odomPublisher = connectedNode.newPublisher("odom", Odometry._TYPE);
         odomPublisher.addListener(RosMain.getPublisherListener());
         scanPublisher = connectedNode.newPublisher("base_scan", LaserScan._TYPE);

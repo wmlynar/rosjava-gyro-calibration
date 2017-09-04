@@ -2,6 +2,10 @@ package com.github.wmlynar.rosjava.log.reading;
 
 import java.util.ArrayList;
 
+import org.ros.message.Duration;
+import org.ros.message.Time;
+import org.ros.node.ConnectedNode;
+
 import geometry_msgs.Vector3Stamped;
 import nav_msgs.Odometry;
 import sensor_msgs.LaserScan;
@@ -16,9 +20,14 @@ public class RosMessageReader {
     private int messagesIndex = 0;
     private String[] line;
 
-    public RosMessageReader(String name) {
+    private Duration shift;
+
+    private ConnectedNode node;
+
+    public RosMessageReader(String name, ConnectedNode node) {
         reader = new CsvLogReader(name);
         readLog();
+        this.node = node;
     }
 
     public String getNextMessageType() {
@@ -37,15 +46,24 @@ public class RosMessageReader {
     }
 
     public Odometry getNextOdomMessage() {
-        return RosMessageFactory.newOdomMessage(line);
+        Odometry m = RosMessageFactory.newOdomMessage(line);
+        initializeTime(m.getHeader().getStamp());
+        m.getHeader().setStamp(m.getHeader().getStamp().add(shift));
+        return m;
     }
 
     public LaserScan getNextScanMessage() {
-        return RosMessageFactory.newScanMessage(line);
+        LaserScan m = RosMessageFactory.newScanMessage(line);
+        initializeTime(m.getHeader().getStamp());
+        m.getHeader().setStamp(m.getHeader().getStamp().add(shift));
+        return m;
     }
 
     public Vector3Stamped getNextDistMessage() {
-        return RosMessageFactory.newDistMessage(line);
+        Vector3Stamped m = RosMessageFactory.newDistMessage(line);
+        initializeTime(m.getHeader().getStamp());
+        m.getHeader().setStamp(m.getHeader().getStamp().add(shift));
+        return m;
     }
 
     private void readLog() {
@@ -70,4 +88,11 @@ public class RosMessageReader {
     // }
     // lineList.add(line);
     // }
+
+    public void initializeTime(Time time) {
+        if (this.shift != null) {
+            return;
+        }
+        this.shift = node.getCurrentTime().subtract(time);
+    }
 }

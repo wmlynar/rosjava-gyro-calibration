@@ -88,6 +88,7 @@ public class FilterMessageReceiver implements RosMessageReceiver {
     @Override
     public void processOdom(long n, double valueX, double valueY, double yaw, double linear, double angular) {
         Plots.plotXy("pos", "odom", valueX, valueY);
+        Plots.plotXTime("angle", "odom", Time.fromNano(n).toSeconds(), yaw);
     }
 
     @Override
@@ -99,6 +100,7 @@ public class FilterMessageReceiver implements RosMessageReceiver {
         filter.update(getTime(n), odomObs);
         Plots.plotXTime("angle", "filter", Time.fromNano(n).toSeconds(), process.getAngle() * 180 / Math.PI);
         Plots.plotXTime("width", "filter", Time.fromNano(n).toSeconds(), process.getWidth());
+        Plots.plotXy("pos", "filter", process.getX(), process.getY());
     }
 
 }

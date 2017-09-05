@@ -20,7 +20,7 @@ public class NeatoFilterNode extends AbstractNodeMain {
 
     private CountUpLatch latch = new CountUpLatch(0);
 
-    private Subscriber<Object> odomSubscriber;
+    private Subscriber<Odometry> odomSubscriber;
     private Subscriber<Object> scanSubscriber;
     private Subscriber<Object> distSubscriber;
 
@@ -28,7 +28,6 @@ public class NeatoFilterNode extends AbstractNodeMain {
 
     @Override
     public GraphName getDefaultNodeName() {
-        // TODO Auto-generated method stub
         return GraphName.of("node");
     }
 

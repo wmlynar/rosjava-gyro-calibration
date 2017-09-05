@@ -46,15 +46,16 @@ public class RosLogRecorderNode extends AbstractNodeMain {
     private Subscriber<Vector3Stamped> distSubscriber;
     private Subscriber<Imu> imuSubscriber;
 
-    private RosMessageTranslator rosMessageTranslator;
+    private RosMessageTranslator rosMessageTranslator1;
+    private RosMessageTranslator rosMessageTranslator2;
 
     private CountUpLatch messagesCount = new CountUpLatch(0);
 
     private int queueSize;
 
     public RosLogRecorderNode(String name, int queueSize) {
-        rosMessageTranslator = new RosMessageTranslator(new RosMessageLogger(name));
-        //rosMessageTranslator = new RosMessageTranslator(new RosMessagePlotter());
+//        rosMessageTranslator1 = new RosMessageTranslator(new RosMessageLogger(name));
+        rosMessageTranslator2 = new RosMessageTranslator(new RosMessagePlotter());
         this.queueSize = queueSize;
     }
 
@@ -72,7 +73,8 @@ public class RosLogRecorderNode extends AbstractNodeMain {
             @Override
             public void onNewMessage(Odometry odom) {
                 try {
-                    rosMessageTranslator.logOdom(odom);
+//                    rosMessageTranslator1.logOdom(odom);
+                    rosMessageTranslator2.logOdom(odom);
                     messagesCount.countUp();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -86,7 +88,8 @@ public class RosLogRecorderNode extends AbstractNodeMain {
             @Override
             public void onNewMessage(LaserScan scan) {
                 try {
-                    rosMessageTranslator.logScan(scan);
+ //                   rosMessageTranslator1.logScan(scan);
+                    rosMessageTranslator2.logScan(scan);
                     messagesCount.countUp();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -100,7 +103,8 @@ public class RosLogRecorderNode extends AbstractNodeMain {
             @Override
             public void onNewMessage(Vector3Stamped dist) {
                 try {
-                    rosMessageTranslator.logDist(dist);
+ //                   rosMessageTranslator1.logDist(dist);
+                    rosMessageTranslator2.logDist(dist);
                     messagesCount.countUp();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -114,7 +118,8 @@ public class RosLogRecorderNode extends AbstractNodeMain {
             @Override
             public void onNewMessage(Imu imu) {
                 try {
-                    rosMessageTranslator.logImu(imu);
+   //                 rosMessageTranslator1.logImu(imu);
+                    rosMessageTranslator2.logImu(imu);
                     messagesCount.countUp();
                 } catch (Exception e) {
                     e.printStackTrace();

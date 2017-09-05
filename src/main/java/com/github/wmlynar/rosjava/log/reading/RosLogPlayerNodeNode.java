@@ -109,7 +109,7 @@ public class RosLogPlayerNodeNode extends AbstractNodeMain {
         //RosMain.startAndConnectToRosCoreWithoutEnvironmentVariables();
         RosMain.connectToRosCoreWithoutEnvironmentVariables();
 
-        RosLogPlayerNodeNode playerNode = new RosLogPlayerNodeNode("log.csv");
+        RosLogPlayerNodeNode playerNode = new RosLogPlayerNodeNode("src/main/resources/logs/with_gyro/moving.csv");
         RosLogRecorderNode plotterNode = new RosLogRecorderNode("log.csv", 10);
 
         RosMain.executeNode(playerNode);

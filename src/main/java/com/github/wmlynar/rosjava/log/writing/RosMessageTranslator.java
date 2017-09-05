@@ -2,6 +2,7 @@ package com.github.wmlynar.rosjava.log.writing;
 
 import geometry_msgs.Vector3Stamped;
 import nav_msgs.Odometry;
+import sensor_msgs.Imu;
 import sensor_msgs.LaserScan;
 
 public class RosMessageTranslator {
@@ -34,5 +35,11 @@ public class RosMessageTranslator {
         double valueY = dist.getVector().getY();
         receiver.processDist(n, valueX, valueY);
     }
+
+	public void logImu(Imu imu) {
+        long n = imu.getHeader().getStamp().totalNsecs();
+        double angularYaw = -imu.getAngularVelocity().getZ();
+        receiver.processImu(n,angularYaw);
+	}
 
 }

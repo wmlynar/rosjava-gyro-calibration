@@ -103,4 +103,8 @@ public class FilterMessageReceiver implements RosMessageReceiver {
         Plots.plotXy("pos", "filter", process.getX(), process.getY());
     }
 
+	@Override
+	public void processImu(long n, double angularYaw) {
+	}
+
 }

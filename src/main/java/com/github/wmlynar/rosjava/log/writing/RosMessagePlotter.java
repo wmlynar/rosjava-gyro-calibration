@@ -14,11 +14,17 @@ public class RosMessagePlotter implements RosMessageReceiver {
 
     @Override
     public void processOdom(long n, double valueX, double valueY, double yaw, double linear, double angular) {
-        Plots.plotXTime("angle", "yaw", n, yaw);
+        Plots.plotXTime("angle", "odom", n, yaw);
+        Plots.plotXTime("angular", "odom", n, angular);
     }
 
     @Override
     public void processDist(long n, double valueX, double valueY) {
     }
+
+	@Override
+	public void processImu(long n, double angularYaw) {
+        Plots.plotXTime("angular", "imu", n, angularYaw);
+	}
 
 }

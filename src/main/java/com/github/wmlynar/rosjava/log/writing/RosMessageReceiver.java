@@ -8,4 +8,6 @@ public interface RosMessageReceiver {
 
     void processDist(long n, double valueX, double valueY);
 
+	void processImu(long n, double angularYaw);
+
 }

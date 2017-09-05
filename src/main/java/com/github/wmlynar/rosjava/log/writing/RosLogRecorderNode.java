@@ -33,6 +33,7 @@ import com.github.wmlynar.rosjava.utils.RosMain;
 
 import geometry_msgs.Vector3Stamped;
 import nav_msgs.Odometry;
+import sensor_msgs.Imu;
 import sensor_msgs.LaserScan;
 
 /**
@@ -43,6 +44,7 @@ public class RosLogRecorderNode extends AbstractNodeMain {
     private Subscriber<Odometry> odomSubscriber;
     private Subscriber<LaserScan> scanSubscriber;
     private Subscriber<Vector3Stamped> distSubscriber;
+    private Subscriber<Imu> imuSubscriber;
 
     private RosMessageTranslator rosMessageTranslator;
 
@@ -51,7 +53,8 @@ public class RosLogRecorderNode extends AbstractNodeMain {
     private int queueSize;
 
     public RosLogRecorderNode(String name, int queueSize) {
-        rosMessageTranslator = new RosMessageTranslator(new RosMessageLogger(name));
+        //rosMessageTranslator = new RosMessageTranslator(new RosMessageLogger(name));
+        rosMessageTranslator = new RosMessageTranslator(new RosMessagePlotter());
         this.queueSize = queueSize;
     }
 
@@ -98,6 +101,20 @@ public class RosLogRecorderNode extends AbstractNodeMain {
             public void onNewMessage(Vector3Stamped dist) {
                 try {
                     rosMessageTranslator.logDist(dist);
+                    messagesCount.countUp();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, queueSize);
+        
+        imuSubscriber = connectedNode.newSubscriber("data", Imu._TYPE);
+        imuSubscriber.addSubscriberListener(RosMain.getSubscriberListener());
+        imuSubscriber.addMessageListener(new MessageListener<Imu>() {
+            @Override
+            public void onNewMessage(Imu imu) {
+                try {
+                    rosMessageTranslator.logImu(imu);
                     messagesCount.countUp();
                 } catch (Exception e) {
                     e.printStackTrace();

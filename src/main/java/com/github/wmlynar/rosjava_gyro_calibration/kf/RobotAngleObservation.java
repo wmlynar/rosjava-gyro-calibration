@@ -13,7 +13,7 @@ public class RobotAngleObservation extends ObservationModel {
 
     @Override
     public int stateDimension() {
-        return 12;
+        return 13;
     }
 
     @Override
@@ -33,7 +33,17 @@ public class RobotAngleObservation extends ObservationModel {
 
     @Override
     public void observationNoiseCovariance(double[][] cov) {
-        cov[0][0] = 2;
+        cov[0][0] = 1e-6;
+    }
+
+    @Override
+    public void normalizeInnovation(double[][] i) {
+        while (i[0][0] < -Math.PI) {
+            i[0][0] += 2 * Math.PI;
+        }
+        while (i[0][0] > Math.PI) {
+            i[0][0] -= 2 * Math.PI;
+        }
     }
 
 }

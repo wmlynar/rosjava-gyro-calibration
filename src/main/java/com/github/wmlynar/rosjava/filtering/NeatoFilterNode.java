@@ -14,6 +14,7 @@ import com.github.wmlynar.rosjava.utils.RosMain;
 
 import geometry_msgs.Vector3Stamped;
 import nav_msgs.Odometry;
+import sensor_msgs.Imu;
 import sensor_msgs.LaserScan;
 
 public class NeatoFilterNode extends AbstractNodeMain {
@@ -23,6 +24,7 @@ public class NeatoFilterNode extends AbstractNodeMain {
     private Subscriber<Odometry> odomSubscriber;
     private Subscriber<Object> scanSubscriber;
     private Subscriber<Object> distSubscriber;
+    private Subscriber<Imu> imuSubscriber;
 
     private RosMessageTranslator translator = new RosMessageTranslator(new FilterMessageReceiver());
 
@@ -47,7 +49,7 @@ public class NeatoFilterNode extends AbstractNodeMain {
             }
         }, 10);
 
-        scanSubscriber = connectedNode.newSubscriber("base_scan", LaserScan._TYPE);
+        scanSubscriber = connectedNode.newSubscriber("scan", LaserScan._TYPE);
         scanSubscriber.addSubscriberListener(RosMain.getSubscriberListener());
         filter.addSubscriber(scanSubscriber, new MessageListener<LaserScan>() {
             @Override
@@ -69,16 +71,32 @@ public class NeatoFilterNode extends AbstractNodeMain {
                 latch.countUp();
             }
         }, 10);
+        
+        imuSubscriber = connectedNode.newSubscriber("data", Imu._TYPE);
+        imuSubscriber.addSubscriberListener(RosMain.getSubscriberListener());
+        imuSubscriber.addMessageListener(new MessageListener<Imu>() {
+            @Override
+            public void onNewMessage(Imu imu) {
+                try {
+                	translator.logImu(imu);
+                	latch.countUp();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 10);
     }
 
     public static void main(String[] args) {
-        RosMain.startAndConnectToRosCoreWithoutEnvironmentVariables();
+        //RosMain.startAndConnectToRosCoreWithoutEnvironmentVariables();
+        RosMain.connectToRosCoreWithoutEnvironmentVariables();
+
         RosLogPlayerNodeNode playerNode = new RosLogPlayerNodeNode(
                 "src/main/resources/log_neato_scan_odom_dist_rotating_only_close.csv");
 
         NeatoFilterNode filterNode = new NeatoFilterNode();
 
-        RosMain.executeNode(playerNode);
+//        RosMain.executeNode(playerNode);
         RosMain.executeNode(filterNode);
 
         try {

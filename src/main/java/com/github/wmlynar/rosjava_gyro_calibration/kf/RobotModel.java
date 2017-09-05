@@ -46,14 +46,14 @@ public class RobotModel extends ProcessModel {
         cov[RobotModel.Y][RobotModel.Y] = 1e-4;
         cov[RobotModel.S][RobotModel.S] = 1;
         cov[RobotModel.A][RobotModel.A] = 1;
-        cov[RobotModel.ROT][RobotModel.ROT] = 1;
-        cov[RobotModel.WIDTH][RobotModel.WIDTH] = 100;
+        cov[RobotModel.ROT][RobotModel.ROT] = 1e-4;
+        cov[RobotModel.WIDTH][RobotModel.WIDTH] = 1e-6;
         cov[RobotModel.L][RobotModel.L] = 1e-4;
         cov[RobotModel.R][RobotModel.R] = 1e-4;
         cov[RobotModel.X1][RobotModel.X1] = 1000;
         cov[RobotModel.Y1][RobotModel.Y1] = 1000;
-        cov[RobotModel.BIAS][RobotModel.BIAS] = 1e-4;
-        cov[RobotModel.INVGAIN][RobotModel.INVGAIN] = 1e-9;
+        cov[RobotModel.BIAS][RobotModel.BIAS] = 1e-2;
+        cov[RobotModel.INVGAIN][RobotModel.INVGAIN] = 1e-2;
         cov[RobotModel.LASER][RobotModel.LASER] = 1e-2;
     }
 
@@ -96,7 +96,7 @@ public class RobotModel extends ProcessModel {
         cov[RobotModel.S][RobotModel.S] = 1e-0;
         cov[RobotModel.A][RobotModel.A] = 1e-6;
         cov[RobotModel.ROT][RobotModel.ROT] = 1e-0;
-        cov[RobotModel.WIDTH][RobotModel.WIDTH] = 1e-7;
+        cov[RobotModel.WIDTH][RobotModel.WIDTH] = 1e-9;
         cov[RobotModel.L][RobotModel.L] = 1e-6;
         cov[RobotModel.R][RobotModel.R] = 1e-6;
         cov[RobotModel.X1][RobotModel.X1] = 1e-6;
@@ -108,10 +108,10 @@ public class RobotModel extends ProcessModel {
 
     @Override
     public void normalizeState(double[][] x) {
-        while (x[RobotModel.A][0] < 0) {
+        while (x[RobotModel.A][0] < -Math.PI) {
             x[RobotModel.A][0] += 2 * Math.PI;
         }
-        while (x[RobotModel.A][0] > 2 * Math.PI) {
+        while (x[RobotModel.A][0] > Math.PI) {
             x[RobotModel.A][0] -= 2 * Math.PI;
         }
     }

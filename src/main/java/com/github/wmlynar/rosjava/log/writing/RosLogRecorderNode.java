@@ -53,8 +53,8 @@ public class RosLogRecorderNode extends AbstractNodeMain {
     private int queueSize;
 
     public RosLogRecorderNode(String name, int queueSize) {
-        //rosMessageTranslator = new RosMessageTranslator(new RosMessageLogger(name));
-        rosMessageTranslator = new RosMessageTranslator(new RosMessagePlotter());
+        rosMessageTranslator = new RosMessageTranslator(new RosMessageLogger(name));
+        //rosMessageTranslator = new RosMessageTranslator(new RosMessagePlotter());
         this.queueSize = queueSize;
     }
 
@@ -80,7 +80,7 @@ public class RosLogRecorderNode extends AbstractNodeMain {
             }
         }, queueSize);
 
-        scanSubscriber = connectedNode.newSubscriber("base_scan", LaserScan._TYPE);
+        scanSubscriber = connectedNode.newSubscriber("scan", LaserScan._TYPE);
         scanSubscriber.addSubscriberListener(RosMain.getSubscriberListener());
         scanSubscriber.addMessageListener(new MessageListener<LaserScan>() {
             @Override

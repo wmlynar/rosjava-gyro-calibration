@@ -25,8 +25,7 @@ public class RosMessageLogger implements RosMessageReceiver {
 
 	@Override
 	public void processImu(long n, double angularYaw) {
-		// TODO Auto-generated method stub
-		
+        CsvLogWriter.log(logName, "gyro_yaw", n, angularYaw);
 	}
 
 }

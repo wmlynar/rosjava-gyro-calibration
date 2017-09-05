@@ -8,10 +8,13 @@ import org.ros.node.AbstractNodeMain;
 import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Publisher;
 
+import com.github.wmlynar.rosjava.filtering.NeatoFilterNode;
+import com.github.wmlynar.rosjava.log.writing.RosLogRecorderNode;
 import com.github.wmlynar.rosjava.utils.RosMain;
 
 import geometry_msgs.Vector3Stamped;
 import nav_msgs.Odometry;
+import sensor_msgs.Imu;
 import sensor_msgs.LaserScan;
 
 public class RosLogPlayerNodeNode extends AbstractNodeMain {
@@ -21,6 +24,7 @@ public class RosLogPlayerNodeNode extends AbstractNodeMain {
     private Publisher<Odometry> odomPublisher;
     private Publisher<LaserScan> scanPublisher;
     private Publisher<Vector3Stamped> distPublisher;
+    private Publisher<Imu> imuPublisher;
 
     private ConnectedNode connectedNode;
 
@@ -44,10 +48,12 @@ public class RosLogPlayerNodeNode extends AbstractNodeMain {
 
         odomPublisher = connectedNode.newPublisher("odom", Odometry._TYPE);
         odomPublisher.addListener(RosMain.getPublisherListener());
-        scanPublisher = connectedNode.newPublisher("base_scan", LaserScan._TYPE);
+        scanPublisher = connectedNode.newPublisher("scan", LaserScan._TYPE);
         scanPublisher.addListener(RosMain.getPublisherListener());
         distPublisher = connectedNode.newPublisher("dist", Vector3Stamped._TYPE);
         distPublisher.addListener(RosMain.getPublisherListener());
+        imuPublisher = connectedNode.newPublisher("data", Imu._TYPE);
+        imuPublisher.addListener(RosMain.getPublisherListener());
 
         this.connectedNode = connectedNode;
 
@@ -81,6 +87,9 @@ public class RosLogPlayerNodeNode extends AbstractNodeMain {
                 case "dist":
                     distPublisher.publish(reader.getNextDistMessage());
                     break;
+                case "gyro_yaw":
+                    imuPublisher.publish(reader.getNextGyroYawMessage());
+                    break;
                 default:
                     throw new RuntimeException("Unknown type: " + type);
                 }
@@ -96,4 +105,22 @@ public class RosLogPlayerNodeNode extends AbstractNodeMain {
         return reader.getNumberOfMessages();
     }
 
+    public static void main(String[] args) {
+        //RosMain.startAndConnectToRosCoreWithoutEnvironmentVariables();
+        RosMain.connectToRosCoreWithoutEnvironmentVariables();
+
+        RosLogPlayerNodeNode playerNode = new RosLogPlayerNodeNode("log.csv");
+        RosLogRecorderNode plotterNode = new RosLogRecorderNode("log.csv", 10);
+
+        RosMain.executeNode(playerNode);
+        RosMain.executeNode(plotterNode);
+
+        try {
+            RosMain.awaitForConnections(8);
+            playerNode.start();
+            plotterNode.awaitForMessages(playerNode.getNumberOfMessages());
+        } catch (InterruptedException e) {
+        }
+
+    }
 }

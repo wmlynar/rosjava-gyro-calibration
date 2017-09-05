@@ -14,6 +14,15 @@ public class LaserBeaconTracker {
         this.max = max;
         this.numSamples = numSamples;
         this.distanceRange = distanceRange;
+        this.distance = 9999999;
+    }
+
+    public LaserBeaconTracker(float min, float max, int numSamples, double distanceRange, int initialAngle) {
+        this.min = min;
+        this.max = max;
+        this.numSamples = numSamples;
+        this.distanceRange = distanceRange;
+        this.angle = initialAngle;
     }
 
     public void processScan(long n, float[] ranges) {
@@ -21,7 +30,7 @@ public class LaserBeaconTracker {
         if (angle == -1) {
             angle = -1;
             distance = 9999999;
-            processRange(ranges, 0, ranges.length - 1, prevDistance);
+            processRange(ranges, 0, ranges.length - 1, 9999999);
             return;
         }
         int angleMin = angle - numSamples;
@@ -43,6 +52,14 @@ public class LaserBeaconTracker {
         return angle;
     }
 
+    public int getAngle2() {
+    	int a = angle;
+    	while(a>180) {
+    		a-= 360;
+    	}
+        return a;
+    }
+
     public double getDistance() {
         return distance;
     }
@@ -51,7 +68,7 @@ public class LaserBeaconTracker {
         for (int i = start; i <= end; i++) {
             float f = ranges[i];
             if (f < distance && f > min && f < max
-                    && (angle == -1 || (f > (prevDistance - distanceRange) && f < (prevDistance + distanceRange)))) {
+                    && (angle == -1 || distance == 9999999 || (f > (prevDistance - distanceRange) && f < (prevDistance + distanceRange)))) {
                 distance = f;
                 angle = i;
             }

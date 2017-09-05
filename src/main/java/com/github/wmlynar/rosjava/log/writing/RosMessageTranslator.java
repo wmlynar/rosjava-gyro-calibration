@@ -23,7 +23,7 @@ public class RosMessageTranslator {
         long n = odom.getHeader().getStamp().totalNsecs();
         double valueX = odom.getPose().getPose().getPosition().getX();
         double valueY = odom.getPose().getPose().getPosition().getY();
-        double yaw = 180 / Math.PI * Utils.fromQuaternionToYaw(odom.getPose().getPose().getOrientation());
+        double yaw = Utils.fromQuaternionToYaw(odom.getPose().getPose().getOrientation());
         double linear = odom.getTwist().getTwist().getLinear().getX();
         double angular = odom.getTwist().getTwist().getAngular().getZ();
         receiver.processOdom(n, valueX, valueY, yaw, linear, angular);
@@ -38,8 +38,9 @@ public class RosMessageTranslator {
 
 	public void logImu(Imu imu) {
         long n = imu.getHeader().getStamp().totalNsecs();
-        double angularYaw = -imu.getAngularVelocity().getZ();
+        double angularYaw = imu.getAngularVelocity().getZ();
         receiver.processImu(n,angularYaw);
 	}
 
 }
+

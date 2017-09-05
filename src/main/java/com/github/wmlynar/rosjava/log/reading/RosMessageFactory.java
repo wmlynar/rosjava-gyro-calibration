@@ -9,6 +9,7 @@ import org.ros.message.Time;
 import geometry_msgs.Quaternion;
 import geometry_msgs.Vector3Stamped;
 import nav_msgs.Odometry;
+import sensor_msgs.Imu;
 import sensor_msgs.LaserScan;
 
 public class RosMessageFactory {
@@ -56,4 +57,11 @@ public class RosMessageFactory {
         m.getVector().setY(Double.parseDouble(line[3]));
         return m;
     }
+
+	public static Imu newImuMessage(String[] line) {
+		Imu m = messageFactory.newFromType(Imu._TYPE);
+        m.getHeader().setStamp(Time.fromNano(Long.parseLong(line[1])));
+        m.getAngularVelocity().setZ(Double.parseDouble(line[2]));
+        return m;
+	}
 }

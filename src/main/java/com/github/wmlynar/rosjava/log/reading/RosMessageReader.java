@@ -8,6 +8,7 @@ import org.ros.node.ConnectedNode;
 
 import geometry_msgs.Vector3Stamped;
 import nav_msgs.Odometry;
+import sensor_msgs.Imu;
 import sensor_msgs.LaserScan;
 
 public class RosMessageReader {
@@ -69,6 +70,14 @@ public class RosMessageReader {
         return m;
     }
 
+	public Imu getNextGyroYawMessage() {
+		Imu m = RosMessageFactory.newImuMessage(line);
+        initializeTime(m.getHeader().getStamp());
+        m.getHeader().setStamp(m.getHeader().getStamp().add(shift));
+        waitForTime(m.getHeader().getStamp());
+        return m;
+	}
+	
     private void waitForTime(Time stamp) {
         Duration sleepDuration = stamp.subtract(node.getCurrentTime());
         if (sleepDuration.isNegative()) {
@@ -109,4 +118,5 @@ public class RosMessageReader {
         }
         this.shift = node.getCurrentTime().subtract(time);
     }
+
 }

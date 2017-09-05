@@ -21,6 +21,7 @@ public class FilterMessageReceiver implements RosMessageReceiver {
     private RobotModel process;
     private KalmanFilter filter;
     private long time = -1;
+	private int numAngleCalibratedSamples = 0;;
 
     public FilterMessageReceiver() {
         angleObs = new RobotAngleObservation();
@@ -43,8 +44,8 @@ public class FilterMessageReceiver implements RosMessageReceiver {
         x[RobotModel.R][0] = 0;
         x[RobotModel.X1][0] = -2;
         x[RobotModel.Y1][0] = 0;
-        x[RobotModel.BIAS][0] = 1;
-        x[RobotModel.INVGAIN][0] = 1;
+        x[RobotModel.BIAS][0] = 0;
+        x[RobotModel.INVGAIN][0] = -1;
         x[RobotModel.LASER][0] = -0.2;
 
         double[][] cov = process.getCovariance();
@@ -58,8 +59,8 @@ public class FilterMessageReceiver implements RosMessageReceiver {
         cov[RobotModel.R][RobotModel.R] = 1e-4;
         cov[RobotModel.X1][RobotModel.X1] = 1000;
         cov[RobotModel.Y1][RobotModel.Y1] = 1000;
-        cov[RobotModel.BIAS][RobotModel.BIAS] = 1e-4;
-        cov[RobotModel.INVGAIN][RobotModel.INVGAIN] = 1e-9;
+        cov[RobotModel.BIAS][RobotModel.BIAS] = 1e-2;
+        cov[RobotModel.INVGAIN][RobotModel.INVGAIN] = 1e-2;
         cov[RobotModel.LASER][RobotModel.LASER] = 1e-2;
 
     }
@@ -67,15 +68,28 @@ public class FilterMessageReceiver implements RosMessageReceiver {
     @Override
     public void processScan(long n, float[] ranges) {
         beaconTracker.processScan(n, ranges);
-        Plots.plotXTime("angle", "beacon", Time.fromNano(n).toSeconds(), beaconTracker.getAngle());
+        
+        Plots.plotXTime("angle", "beacon", Time.fromNano(n).toSeconds(), beaconTracker.getAngle2());
         Plots.plotXTime("distance", "beacon", Time.fromNano(n).toSeconds(), beaconTracker.getDistance());
 
+        if(beaconTracker.getAngle()==-1) {
+        	return;
+        }
+        
         beaconObs.beaconAngle = beaconTracker.getAngle();
         beaconObs.beaconDistance = beaconTracker.getDistance();
         // filter.update(getTime(n), beaconObs);
-
+        
         angleObs.angle = beaconTracker.getAngle() * Math.PI / 180;
-        filter.update(getTime(n), angleObs);
+        if(numAngleCalibratedSamples < 20) {
+        	// calibrate filter on first measurement
+            double[][] x = process.getState();
+            x[RobotModel.A][0] = angleObs.angle;
+            numAngleCalibratedSamples ++;
+        } else {
+            filter.update(getTime(n), angleObs);
+        }
+        
     }
 
     private double getTime(long n) {
@@ -97,7 +111,7 @@ public class FilterMessageReceiver implements RosMessageReceiver {
         odomObs.left = valueX;
         odomObs.right = valueY;
 
-        filter.update(getTime(n), odomObs);
+//        filter.update(getTime(n), odomObs);
         Plots.plotXTime("angle", "filter", Time.fromNano(n).toSeconds(), process.getAngle() * 180 / Math.PI);
         Plots.plotXTime("width", "filter", Time.fromNano(n).toSeconds(), process.getWidth());
         Plots.plotXy("pos", "filter", process.getX(), process.getY());
@@ -105,6 +119,9 @@ public class FilterMessageReceiver implements RosMessageReceiver {
 
 	@Override
 	public void processImu(long n, double angularYaw) {
+		gyroObs.gyroMeasurement = angularYaw;
+        filter.update(getTime(n), gyroObs);
+        Plots.plotXTime("gyro", "bias", Time.fromNano(n).toSeconds(), process.getBias());
 	}
 
 }

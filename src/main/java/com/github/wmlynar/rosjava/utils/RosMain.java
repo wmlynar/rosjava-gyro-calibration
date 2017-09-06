@@ -19,8 +19,8 @@ public class RosMain {
     private static CountUpLatch registrations = new CountUpLatch(0);
     private static CountUpLatch connections = new CountUpLatch(0);
 
-    private static CountPublisherListener publisherlistener = new CountPublisherListener(registrations, connections);
-    private static CountSubscriberListener subscriberlistener = new CountSubscriberListener(registrations, connections);
+    private static CountUpPublisherListener publisherlistener = new CountUpPublisherListener(registrations, connections);
+    private static CountUpSubscriberListener subscriberlistener = new CountUpSubscriberListener(registrations, connections);
 
     public static void startRosCore() {
         RosCore rosCore = RosCore.newPublic(11311);
@@ -94,11 +94,11 @@ public class RosMain {
         connections.awaitFor(number);
     }
 
-    public static CountPublisherListener getPublisherListener() {
+    public static CountUpPublisherListener getPublisherListener() {
         return publisherlistener;
     }
 
-    public static CountSubscriberListener getSubscriberListener() {
+    public static CountUpSubscriberListener getSubscriberListener() {
         return subscriberlistener;
     }
 

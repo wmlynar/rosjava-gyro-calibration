@@ -15,6 +15,7 @@ public class Main {
         simulator.setRotationNoise(.1);
         simulator.setSpeed(1);
         simulator.setAccelerationNoise(1);
+        simulator.setTimeStep(0.1);
         
 		AxleWidthModel model = new AxleWidthModel();
 		AxleWidthRotationObservation rotationObservation = new AxleWidthRotationObservation();
@@ -51,7 +52,7 @@ public class Main {
         cov = leftObservation.getObservationNoiseCovariance();
         cov[0][0] = 1e-6;
 
-        for (double d = 0; d < 1000; d += 0.1) {
+        for (double d = 0; d < 100; d += 1) {
             simulator.simulate(d);
             rotationObservation.rotation = simulator.getRotation();
             filter.update(d, rotationObservation);

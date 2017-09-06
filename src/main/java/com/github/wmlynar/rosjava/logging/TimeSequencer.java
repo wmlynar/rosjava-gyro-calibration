@@ -14,10 +14,7 @@ import org.ros.node.topic.Subscriber;
 public class TimeSequencer<T extends Message> {
 
     private Object lock = new Object();
-    private ConnectedNode node;
-    private Subscriber subscriber;
     private long windowNanoseconds;
-    private int periodMiliseconds;
     private PriorityBlockingQueue<MessageWithTime> queue = new PriorityBlockingQueue<>(50,
             new Comparator<MessageWithTime>() {
 
@@ -26,13 +23,11 @@ public class TimeSequencer<T extends Message> {
                     return m1.time.compareTo(m2.time);
                 }
             });
-    private MessageListener<T> destinationMessageListener;
     private Thread thread;
     private Rate rate;
 
     public TimeSequencer(double windowSeconds, double periodSeconds, ConnectedNode node) {
         this.rate = new WallTimeRate((int) (1 / periodSeconds));
-        this.node = node;
         this.windowNanoseconds = (long) (windowSeconds * 1000000000L);
         this.thread = new Thread(new Runnable() {
             @Override
@@ -62,7 +57,6 @@ public class TimeSequencer<T extends Message> {
     }
 
     public void addSubscriber(Subscriber<T> subscriber, MessageListener<T> messageListener, int queueSize) {
-        this.subscriber = subscriber;
         subscriber.addMessageListener(new MessageListener<T>() {
             @Override
             public void onNewMessage(T message) {

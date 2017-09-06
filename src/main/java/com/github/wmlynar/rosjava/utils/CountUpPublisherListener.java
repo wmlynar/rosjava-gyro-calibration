@@ -4,12 +4,12 @@ import org.ros.internal.node.topic.SubscriberIdentifier;
 import org.ros.node.topic.Publisher;
 import org.ros.node.topic.PublisherListener;
 
-public class CountPublisherListener implements PublisherListener {
+public class CountUpPublisherListener implements PublisherListener {
 
     private CountUpLatch registrations;
     private CountUpLatch connections;
 
-    public CountPublisherListener(CountUpLatch registrations, CountUpLatch connections) {
+    public CountUpPublisherListener(CountUpLatch registrations, CountUpLatch connections) {
         this.registrations = registrations;
         this.connections = connections;
         this.registrations.countUp();

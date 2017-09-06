@@ -4,6 +4,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ScheduledExecutorService;
 
 import org.ros.concurrent.CancellableLoop;
+import org.ros.message.Time;
 import org.ros.namespace.GraphName;
 import org.ros.node.AbstractNodeMain;
 import org.ros.node.ConnectedNode;
@@ -76,7 +77,10 @@ public class NodeAxleSim extends AbstractNodeMain {
 			protected void loop() throws InterruptedException {
 	            simulator.simulate(simTime);
 	            
+	            Time time = connectedNode.getCurrentTime();
+	            
 	            Odom o = new Odom();
+	            o.time = time;
 	            o.x = simulator.getX();
 	            o.y = simulator.getY();
 	            o.yaw = simulator.getAngle();
@@ -86,6 +90,7 @@ public class NodeAxleSim extends AbstractNodeMain {
 	            odomPublisher.publish(odometry);
 	            
 	            Dist dist = new Dist();
+	            dist.time = time;
 	            dist.left = simulator.getDistanceLeft();
 	            dist.right = simulator.getDistanceRight();
 	            Vector3Stamped distances = JavaToRos.newDistMessage(dist);
